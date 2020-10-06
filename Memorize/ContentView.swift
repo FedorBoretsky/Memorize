@@ -21,7 +21,7 @@ struct ContentView: View {
         }
         .padding()
         .foregroundColor(.orange)
-        .font(Font.largeTitle)
+        .font(viewModel.cardsBunch.count/2 <= 4 ? Font.largeTitle : Font.title2)
         
     }
 }
