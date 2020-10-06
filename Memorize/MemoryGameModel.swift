@@ -22,10 +22,11 @@ struct MemoryGameModel<CardContentType> {
             cardsBunch.append(Card(content: content, id: pairIndex * 2))
             cardsBunch.append(Card(content: content, id: pairIndex * 2 + 1))
         }
+        cardsBunch.shuffle()
     }
     
     struct Card: Identifiable {
-        var isFaceUp: Bool = false
+        var isFaceUp: Bool = true
         var isMatched: Bool = false
         var content: CardContentType
         var id: Int
