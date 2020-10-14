@@ -11,9 +11,21 @@ struct MemoryGameModel<CardContentType> {
     
     var cardsBunch: Array<Card>
     
-    func choose(card: Card){
+    mutating func choose(card: Card){
         print("Card choosen: \(card)")
+        let choosenIndex = index(of: card)
+        cardsBunch[choosenIndex].isFaceUp.toggle()
     }
+    
+    func index(of card: Card) -> Int {
+        for index in 0..<cardsBunch.count {
+            if card.id == cardsBunch[index].id {
+                return index
+            }
+        }
+        return 0  // TODO: bogus!
+    }
+    
     
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContentType){
         cardsBunch = Array<Card>()
