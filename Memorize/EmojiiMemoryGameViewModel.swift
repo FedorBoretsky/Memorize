@@ -21,12 +21,15 @@ class EmojiiMemoryGameViewModel: ObservableObject {
     
     // MARK: - Acces to the Model
     
-    var cardsBunch: Array<MemoryGameModel<String>.Card> {
+    var cardš: Array<MemoryGameModel<String>.Card> {
         model.cardsBunch
     }
     
     // MARK: - Intent(s)
     
+    /// Ask model to change a state of a card between "Face Up" and "Cover Up".
+    ///
+    /// - Parameter card: A card wich state we want to change.
     func choose(card: MemoryGameModel<String>.Card) {
         model.choose(card: card)
     }
