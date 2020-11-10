@@ -22,7 +22,7 @@ class EmojiiMemoryGameViewModel: ObservableObject {
     // MARK: - Acces to the Model
     
     var cardš: Array<MemoryGameModel<String>.Card> {
-        model.cardsBunch
+        model.cardš
     }
     
     // MARK: - Intent(s)

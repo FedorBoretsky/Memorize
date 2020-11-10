@@ -9,32 +9,23 @@ import Foundation
 
 struct MemoryGameModel<CardContentType> {
     
-    var cardsBunch: Array<Card>
+    var cardš: Array<Card>
     
     mutating func choose(card: Card){
         print("Card choosen: \(card)")
-        let choosenIndex = index(of: card)
-        cardsBunch[choosenIndex].isFaceUp.toggle()
-    }
-    
-    func index(of card: Card) -> Int {
-        for index in 0..<cardsBunch.count {
-            if card.id == cardsBunch[index].id {
-                return index
-            }
+        if let choosenIndex = cardš.firstIndex(matching: card) {
+            cardš[choosenIndex].isFaceUp.toggle()
         }
-        return 0  // TODO: bogus!
     }
-    
     
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContentType){
-        cardsBunch = Array<Card>()
+        cardš = Array<Card>()
         for pairIndex in 0..<numberOfPairsOfCards {
             let content = cardContentFactory(pairIndex)
-            cardsBunch.append(Card(content: content, id: pairIndex * 2))
-            cardsBunch.append(Card(content: content, id: pairIndex * 2 + 1))
+            cardš.append(Card(content: content, id: pairIndex * 2))
+            cardš.append(Card(content: content, id: pairIndex * 2 + 1))
         }
-        cardsBunch.shuffle()
+        cardš.shuffle()
     }
     
     struct Card: Identifiable {
