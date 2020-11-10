@@ -46,7 +46,7 @@ struct CardView: View {
             }
         }
 //        .aspectRatio(2/3, contentMode: .fit)
-        // TODO: fix aspecRatio for cards
+        // TODO: fix aspectRatio for cards
         .font(Font.system(size: fontSize(for: size)))
     }
     

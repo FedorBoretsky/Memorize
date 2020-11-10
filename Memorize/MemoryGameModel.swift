@@ -11,7 +11,14 @@ struct MemoryGameModel<CardContentType> where CardContentType: Equatable {
     
     var cards¨: Array<Card>
     
-    var indexOfTheOneAndOnlyFaceUpCard: Int?
+    var indexOfTheOneAndOnlyFaceUpCard: Int? {
+        get { cards¨.indices.filter { cards¨[$0].isFaceUp }.only }
+        set {
+            for index in cards¨.indices {
+                cards¨[index].isFaceUp = (index == newValue)
+            }
+        }
+    }
     
     mutating func choose(card: Card){
         if let choosenIndex = cards¨.firstIndex(matching: card), !cards¨[choosenIndex].isFaceUp, !cards¨[choosenIndex].isMatched {
@@ -21,15 +28,11 @@ struct MemoryGameModel<CardContentType> where CardContentType: Equatable {
                     cards¨[choosenIndex].isMatched = true
                     cards¨[potentialMatchIndex].isMatched = true
                 }
-                indexOfTheOneAndOnlyFaceUpCard = nil
+                cards¨[choosenIndex].isFaceUp = true
             } else {
-                for index in cards¨.indices {
-                    cards¨[index].isFaceUp = false
-                }
                 indexOfTheOneAndOnlyFaceUpCard = choosenIndex
             }
             
-            cards¨[choosenIndex].isFaceUp = true
         }
     }
     
