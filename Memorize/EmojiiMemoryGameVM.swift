@@ -34,7 +34,7 @@ class EmojiiMemoryGameVM: ObservableObject {
     static func createMemoryGame() -> MemoryGameModel<String> {
         let theme = possibleThemes¨[selectTheme()]
         let emojiiStore = theme.emojis¨.shuffled()
-        let pairsCount = theme.numberOfPairsToShow ?? Int.random(in: 2...min(5,theme.emojis¨.count))
+        let pairsCount = theme.numberOfPairsToShow ?? Int.random(in: 2...(theme.emojis¨.count-1))
         return MemoryGameModel<String>(numberOfPairsOfCards: pairsCount) { pairIndex in
             return emojiiStore[pairIndex]
         }

@@ -49,6 +49,8 @@ struct MemoryGameModel<CardContentType> where CardContentType: Equatable {
     struct Card: Identifiable {
         var isFaceUp: Bool = false
         var isMatched: Bool = false
+        var isAlreadySeen: Bool = false
+        var mismatchPenalty: Int = 0
         var content: CardContentType
         var id: Int
     }
