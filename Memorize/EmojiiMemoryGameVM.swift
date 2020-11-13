@@ -32,10 +32,6 @@ class EmojiiMemoryGameVM: ObservableObject {
         let theme = possibleThemes¨[selectTheme()]
         let emojiiStore = theme.emojis¨.shuffled()
         let pairsCount = theme.numberOfPairsToShow ?? Int.random(in: 2...min(5,theme.emojis¨.count))
-//        themeC
-        print(emojiiStore)
-        print(pairsCount)
-//        themeColor = theme.color
         return MemoryGameModel<String>(numberOfPairsOfCards: pairsCount) { pairIndex in
             return emojiiStore[pairIndex]
         }
@@ -49,7 +45,6 @@ class EmojiiMemoryGameVM: ObservableObject {
     
     // MARK: - Access to the Theme
     
-//    static private var themeColor = Color.clear
     
     var themeColor: Color {
         Self.possibleThemes¨[Self.currentThemeIndex!].color
