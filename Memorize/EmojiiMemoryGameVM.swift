@@ -13,11 +13,23 @@ class EmojiiMemoryGameVM: ObservableObject {
     
     static let possibleThemes¨: [Theme] = [
         Theme(name: "Halloween", emojis¨: "👻🎃🕷🧙‍♀️🧹🕯🦇🌗🍭🧛🏻👀🙀", numberOfPairsToShow: nil, color: .orange),
-        Theme(name: "Flags", emojis¨: "🇦🇹🇩🇰🇨🇱🇨🇿🇨🇦🇬🇱🇬🇷🇱🇷🇺🇸🏴󠁧󠁢󠁥󠁮󠁧󠁿🇹🇿", numberOfPairsToShow: 4, color: .init(white: 0.75)),
+        Theme(name: "Flags", emojis¨: "🇦🇹🇩🇰🇨🇱🇨🇿🇨🇦🇬🇱🇬🇷🇱🇷🇺🇸🏴󠁧󠁢󠁥󠁮󠁧󠁿🇹🇿", numberOfPairsToShow: 5, color: Color(#colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1))),
+        Theme(name: "Beach", emojis¨: "🏝🏖⛵️🤿🎣🚣‍♀️⚓️🚤🌞🪁🏊‍♂️", numberOfPairsToShow: 4, color: .yellow),
     ]
     
+    static private var themeIndex, prevThemeIndex, prevPrevThemIndex: Int?
+    
+    static func selectTheme() -> Int {
+        prevPrevThemIndex = prevThemeIndex
+        prevThemeIndex = themeIndex
+        while themeIndex == prevThemeIndex || themeIndex == prevPrevThemIndex {
+            themeIndex = Int.random(in: 0..<possibleThemes¨.count)
+        }
+        return themeIndex!
+    }
+    
     static func createMemoryGame() -> MemoryGameModel<String> {
-        let theme = possibleThemes¨[1]//.randomElement()!
+        let theme = possibleThemes¨[selectTheme()]
         let emojiiStore = theme.emojis¨.shuffled()
         let pairsCount = theme.numberOfPairsToShow ?? Int.random(in: 2...min(5,theme.emojis¨.count))
 //        themeC
@@ -51,6 +63,12 @@ class EmojiiMemoryGameVM: ObservableObject {
     /// - Parameter card: A card wich state we want to change.
     func choose(card: MemoryGameModel<String>.Card) {
         model.choose(card: card)
+    }
+    
+    /// Start new game
+    ///
+    func newGame() {
+        model = Self.createMemoryGame()
     }
     
 }
