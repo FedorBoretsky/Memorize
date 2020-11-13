@@ -14,7 +14,10 @@ class EmojiiMemoryGameVM: ObservableObject {
     static let possibleThemes¨: [Theme] = [
         Theme(name: "Halloween", emojis¨: "👻🎃🕷🧙‍♀️🧹🕯🦇🌗🍭🧛🏻👀🙀", numberOfPairsToShow: nil, color: .orange),
         Theme(name: "Flags", emojis¨: "🇦🇹🇩🇰🇨🇱🇨🇿🇨🇦🇬🇱🇬🇷🇱🇷🇺🇸🏴󠁧󠁢󠁥󠁮󠁧󠁿🇹🇿", numberOfPairsToShow: 5, color: Color(#colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1))),
-        Theme(name: "Beach", emojis¨: "🏝🏖⛵️🤿🎣🚣‍♀️⚓️🚤🌞🪁🏊‍♂️", numberOfPairsToShow: 4, color: .yellow),
+        Theme(name: "Beach", emojis¨: "🏝🏖⛵️🤿🎣🚣‍♀️⚓️🚤🌞🪁🏊‍♂️", numberOfPairsToShow: 4, color: Color(#colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1))),
+        Theme(name: "Red", emojis¨: "🏓🚗🚒⛽️☎️🧲🎈📍⛔️‼️♥️🍎🍓🍄", numberOfPairsToShow: 5, color: .red),
+        Theme(name: "Plants", emojis¨: "🌵🌳🍀💐🌻🌹🪴🌿🌴🌲", numberOfPairsToShow: nil, color: Color(#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1))),
+        Theme(name: "Office", emojis¨: "💻🖥🖨⌨️📞🗄📁🗂📈🗃📥📤📔📋📎✂️🖍", numberOfPairsToShow: 4, color: .gray),
     ]
     
     static private var currentThemeIndex, prevThemeIndex, prevPrevThemIndex: Int?
