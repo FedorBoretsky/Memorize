@@ -17,15 +17,15 @@ class EmojiiMemoryGameVM: ObservableObject {
         Theme(name: "Beach", emojis¨: "🏝🏖⛵️🤿🎣🚣‍♀️⚓️🚤🌞🪁🏊‍♂️", numberOfPairsToShow: 4, color: .yellow),
     ]
     
-    static private var themeIndex, prevThemeIndex, prevPrevThemIndex: Int?
+    static private var currentThemeIndex, prevThemeIndex, prevPrevThemIndex: Int?
     
     static func selectTheme() -> Int {
         prevPrevThemIndex = prevThemeIndex
-        prevThemeIndex = themeIndex
-        while themeIndex == prevThemeIndex || themeIndex == prevPrevThemIndex {
-            themeIndex = Int.random(in: 0..<possibleThemes¨.count)
+        prevThemeIndex = currentThemeIndex
+        while currentThemeIndex == prevThemeIndex || currentThemeIndex == prevPrevThemIndex {
+            currentThemeIndex = Int.random(in: 0..<possibleThemes¨.count)
         }
-        return themeIndex!
+        return currentThemeIndex!
     }
     
     static func createMemoryGame() -> MemoryGameModel<String> {
@@ -35,7 +35,7 @@ class EmojiiMemoryGameVM: ObservableObject {
 //        themeC
         print(emojiiStore)
         print(pairsCount)
-        themeColor = theme.color
+//        themeColor = theme.color
         return MemoryGameModel<String>(numberOfPairsOfCards: pairsCount) { pairIndex in
             return emojiiStore[pairIndex]
         }
@@ -49,12 +49,16 @@ class EmojiiMemoryGameVM: ObservableObject {
     
     // MARK: - Access to the Theme
     
-    static private var themeColor = Color.clear
+//    static private var themeColor = Color.clear
     
     var themeColor: Color {
-        Self.themeColor
+        Self.possibleThemes¨[Self.currentThemeIndex!].color
     }
-    
+
+    var themeName: String {
+        Self.possibleThemes¨[Self.currentThemeIndex!].name
+    }
+
     
     // MARK: - Intent(s)
     

@@ -13,7 +13,9 @@ struct EmojiMemoryGameView: View {
         
         VStack {
             HStack {
-                Text("Theme Name")
+                Text(viewModel.themeName)
+                    .font(.title)
+                    .foregroundColor(.primary)
                 
                 Spacer()
                 
