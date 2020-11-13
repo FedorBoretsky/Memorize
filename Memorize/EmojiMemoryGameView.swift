@@ -12,10 +12,14 @@ struct EmojiMemoryGameView: View {
     var body: some View {
         
         VStack {
-            HStack {
+            HStack(alignment: .firstTextBaseline) {
                 Text(viewModel.themeName)
                     .font(.title)
                     .foregroundColor(.primary)
+                
+                Text(" Score: \(viewModel.score)")
+//                    .font(.title)
+//                    .foregroundColor(.primary)
                 
                 Spacer()
                 
