@@ -18,8 +18,6 @@ struct EmojiMemoryGameView: View {
                     .foregroundColor(.primary)
                 
                 Text(" Score: \(viewModel.score)")
-//                    .font(.title)
-//                    .foregroundColor(.primary)
                 
                 Spacer()
                 
@@ -30,7 +28,7 @@ struct EmojiMemoryGameView: View {
             }.padding()
             
             
-            Grid (viewModel.cards¨) { card in
+            Grid (viewModel.cards¨, desiredAspectRatio: 1) { card in
                 CardView(card: card)
                     .onTapGesture{
                         viewModel.choose(card: card)
@@ -65,8 +63,6 @@ struct CardView: View {
                 }
             }
         }
-//        .aspectRatio(2/3, contentMode: .fit)
-        // TODO: fix aspectRatio for cards
         .font(Font.system(size: fontSize(for: size)))
     }
     
