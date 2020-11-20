@@ -29,7 +29,7 @@ struct EmojiMemoryGameView: View {
             
             
             Grid (viewModel.cards¨, desiredAspectRatio: 1) { card in
-                CardView(card: card)
+                CardView(card: card, fill: viewModel.themeFill)
                     .onTapGesture{
                         viewModel.choose(card: card)
                     }
@@ -44,6 +44,7 @@ struct EmojiMemoryGameView: View {
 
 struct CardView: View {
     var card: MemoryGameModel<String>.Card
+    var fill: [Color]
     
     var body: some View {
         GeometryReader { geometry in
@@ -60,6 +61,7 @@ struct CardView: View {
             } else {
                 if !card.isMatched {
                     RoundedRectangle(cornerRadius: cornerRadius(for: size))
+                        .fill(LinearGradient(gradient: Gradient(colors: fill), startPoint: .bottomLeading, endPoint: .topTrailing))
                 }
             }
         }

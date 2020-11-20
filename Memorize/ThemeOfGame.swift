@@ -7,16 +7,17 @@
 
 import SwiftUI
 
+
 struct Theme {
     let name: String
     let emojis¨: [String]
-    let numberOfPairsToShow: Int?  // If nil, then select random number to show
-    let color: Color
+    let pairsToShow: Int?  // If nil, then select random number to show
+    let fill: [Color]
 }
 
 extension Theme {
-    init (name: String, emojis¨: String, numberOfPairsToShow: Int? = nil, color: Color) {
-        self.init(name: name, emojis¨: emojis¨.map{ String($0) }, numberOfPairsToShow: numberOfPairsToShow, color: color)
+    init (name: String, emojis¨: String, pairsToShow: Int? = nil, fill: [Color]) {
+        self.init(name: name, emojis¨: emojis¨.map{ String($0) }, pairsToShow: pairsToShow, fill: fill)
     }
 }
 
