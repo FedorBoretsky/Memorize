@@ -10,8 +10,24 @@ import Foundation
 struct MemoryGameModel<CardContentType> where CardContentType: Equatable {
     
     var cards¨: Array<Card>
-    var score = 0
+    var score : Double = 0
+    var bonus : Double = 0
     
+    private let startDate = Date()
+    
+    var secondsFromStart: Double {
+        return -startDate.timeIntervalSinceNow
+        
+    }
+    var scoreTimeFactor: Double {
+        return max(1, 10 / secondsFromStart)
+    }
+    mutating func reward(_ points: Double) {
+        let pointsWithBonus = points * scoreTimeFactor
+        score += pointsWithBonus
+        bonus += pointsWithBonus - points
+    }
+
     var indexOfTheOneAndOnlyFaceUpCard: Int? {
         get { cards¨.indices.filter { cards¨[$0].isFaceUp }.only }
         set {
@@ -31,14 +47,14 @@ struct MemoryGameModel<CardContentType> where CardContentType: Equatable {
                     // Matched
                     cards¨[choosenIndex].isMatched = true
                     cards¨[potentialMatchIndex].isMatched = true
-                    score += 2
+                    reward(2)
                 } else {
                     // Not matched
                     if cards¨[choosenIndex].isAlreadySeen {
-                        score -= 1
+                        reward(-1)
                     }
                     if cards¨[potentialMatchIndex].isAlreadySeen {
-                        score -= 1
+                        reward(-1)
                     }
                 }
                 cards¨[choosenIndex].isFaceUp = true

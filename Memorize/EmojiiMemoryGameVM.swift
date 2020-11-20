@@ -46,9 +46,14 @@ class EmojiiMemoryGameVM: ObservableObject {
         model.cards¨
     }
     
-    var score: Int {
+    var score: Double {
         model.score
     }
+
+    var bonus: Double {
+        model.bonus
+    }
+
     
     // MARK: - Access to the Theme
     

@@ -16,17 +16,21 @@ struct EmojiMemoryGameView: View {
                 Text(viewModel.themeName)
                     .font(.title)
                     .foregroundColor(.primary)
-                
-                Text(" Score: \(viewModel.score)")
-                
+                            
                 Spacer()
                 
                 Text("New Game")
                     .onTapGesture{
                         viewModel.newGame()
                 }
-            }.padding()
+            }.padding([.horizontal, .top])
             
+            HStack(alignment: .firstTextBaseline) {
+                Text(" Score: \(viewModel.score, specifier: "%.1f") (with speeding poing: \(viewModel.bonus, specifier: "%-.1f"))")
+                    .foregroundColor(.primary)
+                
+                Spacer()
+            }.padding()
             
             Grid (viewModel.cards¨, desiredAspectRatio: 1) { card in
                 CardView(card: card, fill: viewModel.themeFill)
@@ -35,6 +39,8 @@ struct EmojiMemoryGameView: View {
                     }
                     .padding(7)
             }
+            
+
         }
         .padding()
         .foregroundColor(viewModel.themeColor)
