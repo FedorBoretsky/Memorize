@@ -16,17 +16,16 @@ struct EmojiMemoryGameView: View {
                 Text(viewModel.themeName)
                     .font(.title)
                     .foregroundColor(.primary)
-                            
+                
                 Spacer()
                 
-                Text("New Game")
-                    .onTapGesture{
-                        viewModel.newGame()
+                Button("New Game") {
+                    viewModel.newGame()
                 }
             }.padding([.horizontal, .top])
             
             HStack(alignment: .firstTextBaseline) {
-                Text(" Score: \(viewModel.score, specifier: "%.1f") (with speeding poing: \(viewModel.bonus, specifier: "%-.1f"))")
+                Text(" Score: \(viewModel.score, specifier: "%.1f") (with speeding points: \(viewModel.bonus, specifier: "%-.1f"))")
                     .foregroundColor(.primary)
                 
                 Spacer()
@@ -40,7 +39,7 @@ struct EmojiMemoryGameView: View {
                     .padding(7)
             }
             
-
+            
         }
         .padding()
         .foregroundColor(viewModel.themeColor)
@@ -79,7 +78,7 @@ struct CardView: View {
     func cornerRadius(for size: CGSize) -> CGFloat {
         return min(size.width, size.height) * 0.125
     }
-
+    
     let borderWidth: CGFloat = 3
     
     func fontSize(for size: CGSize) -> CGFloat {
@@ -94,7 +93,7 @@ struct ContentView_Previews: PreviewProvider {
         Group {
             EmojiMemoryGameView(viewModel: EmojiiMemoryGameVM())
         }
-            
+        
     }
 }
 
