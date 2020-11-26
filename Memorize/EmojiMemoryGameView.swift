@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiiMemoryGameVM
+    
     var body: some View {
         
         VStack {
@@ -57,7 +58,7 @@ struct CardView: View {
         }
     }
     
-    func body (size: CGSize) -> some View {
+    private func body (size: CGSize) -> some View {
         ZStack{
             if card.isFaceUp {
                 RoundedRectangle(cornerRadius: cornerRadius(for: size)).stroke(lineWidth: borderWidth)
@@ -70,18 +71,18 @@ struct CardView: View {
                 }
             }
         }
-        .font(Font.system(size: fontSize(for: size)))
+        .font(Font.system(size: emojiFontSize(for: size)))
     }
     
-    // - MARK: Control panel
+    // - MARK: Drawing parameters
     
-    func cornerRadius(for size: CGSize) -> CGFloat {
+    private func cornerRadius(for size: CGSize) -> CGFloat {
         return min(size.width, size.height) * 0.125
     }
     
-    let borderWidth: CGFloat = 3
+    private let borderWidth: CGFloat = 3
     
-    func fontSize(for size: CGSize) -> CGFloat {
+    private func emojiFontSize(for size: CGSize) -> CGFloat {
         return min(size.width, size.height) * 0.75
     }
     

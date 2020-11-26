@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct Grid<Item, ItemView>: View where Item: Identifiable, ItemView: View {
-    var items¨: [Item]
-    var desiredAspectRatio: Double
-    var viewForItem: (Item) -> ItemView
+    private var items¨: [Item]
+    private var desiredAspectRatio: Double
+    private var viewForItem: (Item) -> ItemView
     
     init (_ items¨: [Item], desiredAspectRatio: Double = 1, viewForItem: @escaping (Item) -> ItemView) {
         self.items¨ = items¨
@@ -24,13 +24,13 @@ struct Grid<Item, ItemView>: View where Item: Identifiable, ItemView: View {
         }
     }
     
-    func body(for layout: GridLayout) -> some View {
+    private func body(for layout: GridLayout) -> some View {
         ForEach(items¨) { item in
             bodyOfItem(for: item, in: layout)
         }
     }
     
-    func bodyOfItem(for item: Item, in layout: GridLayout) -> some View {
+    private func bodyOfItem(for item: Item, in layout: GridLayout) -> some View {
         let index = items¨.firstIndex(matching: item)!
         return viewForItem(item)
             .frame(width: layout.itemSize.width, height: layout.itemSize.height)

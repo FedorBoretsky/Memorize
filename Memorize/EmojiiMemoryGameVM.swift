@@ -11,7 +11,7 @@ class EmojiiMemoryGameVM: ObservableObject {
     
     @Published private var model: MemoryGameModel<String> = createMemoryGame()
     
-    static let possibleThemes¨: [Theme] = [
+    private static let possibleThemes¨: [Theme] = [
         Theme(name: "Halloween", emojis¨: "👻🎃🕷🧙‍♀️🧹🕯🦇🌗🍭🧛🏻👀🙀", pairsToShow: nil, fill: [.red, .orange, Color(#colorLiteral(red: 1, green: 0.7764705882, blue: 0, alpha: 1))]),
         Theme(name: "Flags", emojis¨: "🇦🇹🇩🇰🇨🇱🇨🇿🇨🇦🇬🇱🇬🇷🇱🇷🇺🇸🏴󠁧󠁢󠁥󠁮󠁧󠁿🇹🇿", pairsToShow: 5, fill: [Color(#colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1))]),
         Theme(name: "Beach", emojis¨: "🏝🏖⛵️🤿🎣🚣‍♀️⚓️🚤🌞🪁🏊‍♂️", pairsToShow: 4, fill: [Color(#colorLiteral(red: 0.9686274529, green: 0.7668460586, blue: 0.3002265522, alpha: 1)), Color(#colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)), Color(#colorLiteral(red: 0.5310901402, green: 0.8380914645, blue: 0.9686274529, alpha: 1)), Color(#colorLiteral(red: 0.3248517906, green: 0.7765617937, blue: 0.9686274529, alpha: 1)), Color(#colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1))]),
@@ -20,9 +20,11 @@ class EmojiiMemoryGameVM: ObservableObject {
         Theme(name: "Office", emojis¨: "💻🖥🖨⌨️📞🗄📁🗂📈🗃📥📤📔📋📎✂️🖍", pairsToShow: 4, fill: [.gray]),
     ]
     
-    static private var currentThemeIndex, prevThemeIndex, prevPrevThemIndex: Int?
+    static private var currentThemeIndex: Int?
+    static private var prevThemeIndex: Int?
+    static private var prevPrevThemIndex: Int?
     
-    static func selectTheme() -> Int {
+    private static func selectTheme() -> Int {
         prevPrevThemIndex = prevThemeIndex
         prevThemeIndex = currentThemeIndex
         while currentThemeIndex == prevThemeIndex || currentThemeIndex == prevPrevThemIndex {
@@ -31,7 +33,7 @@ class EmojiiMemoryGameVM: ObservableObject {
         return currentThemeIndex!
     }
     
-    static func createMemoryGame() -> MemoryGameModel<String> {
+    private static func createMemoryGame() -> MemoryGameModel<String> {
         let theme = possibleThemes¨[selectTheme()]
         let emojiiStore = theme.emojis¨.shuffled()
         let pairsCount = theme.pairsToShow ?? Int.random(in: 2...(theme.emojis¨.count-1))
