@@ -58,32 +58,21 @@ struct CardView: View {
         }
     }
     
+    @ViewBuilder
     private func body (size: CGSize) -> some View {
-        ZStack{
-            if card.isFaceUp {
-                RoundedRectangle(cornerRadius: cornerRadius(for: size)).stroke(lineWidth: borderWidth)
-                RoundedRectangle(cornerRadius: cornerRadius(for: size)).fill(Color.white)
+        if card.isFaceUp || !card.isMatched {
+            ZStack {
                 Pie(startAngle: Angle.degrees(-90), endAngle: Angle.degrees(15))
                     .padding(5)
                     .opacity(0.33)
                 Text(card.content)
-            } else {
-                if !card.isMatched {
-                    RoundedRectangle(cornerRadius: cornerRadius(for: size))
-                        .fill(LinearGradient(gradient: Gradient(colors: fill), startPoint: .bottomLeading, endPoint: .topTrailing))
-                }
+                    .font(Font.system(size: emojiFontSize(for: size)))
             }
+            .cardify(isFaceUp: card.isFaceUp, coverFill: fill)
         }
-        .font(Font.system(size: emojiFontSize(for: size)))
     }
     
-    // - MARK: Drawing parameters
-    
-    private func cornerRadius(for size: CGSize) -> CGFloat {
-        return min(size.width, size.height) * 0.125
-    }
-    
-    private let borderWidth: CGFloat = 3
+    // - MARK: Drawing parameters    
     
     private func emojiFontSize(for size: CGSize) -> CGFloat {
         return min(size.width, size.height) * 0.65
