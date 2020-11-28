@@ -63,6 +63,9 @@ struct CardView: View {
             if card.isFaceUp {
                 RoundedRectangle(cornerRadius: cornerRadius(for: size)).stroke(lineWidth: borderWidth)
                 RoundedRectangle(cornerRadius: cornerRadius(for: size)).fill(Color.white)
+                Pie(startAngle: Angle.degrees(-90), endAngle: Angle.degrees(15))
+                    .padding(5)
+                    .opacity(0.33)
                 Text(card.content)
             } else {
                 if !card.isMatched {
@@ -83,7 +86,7 @@ struct CardView: View {
     private let borderWidth: CGFloat = 3
     
     private func emojiFontSize(for size: CGSize) -> CGFloat {
-        return min(size.width, size.height) * 0.75
+        return min(size.width, size.height) * 0.65
     }
     
 }
@@ -91,10 +94,9 @@ struct CardView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            EmojiMemoryGameView(viewModel: EmojiiMemoryGameVM())
-        }
-        
+            let game = EmojiiMemoryGameVM()
+            game.choose(card: game.cards¨[0])
+            return EmojiMemoryGameView(viewModel: game)
     }
 }
 
