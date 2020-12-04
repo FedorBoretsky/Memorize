@@ -21,12 +21,14 @@ struct EmojiMemoryGameView: View {
                 Spacer()
                 
                 Button("New Game") {
-                    viewModel.newGame()
+                    withAnimation(.easeInOut){
+                        viewModel.newGame()
+                    }
                 }
             }.padding([.horizontal, .top])
             
             HStack(alignment: .firstTextBaseline) {
-                Text(" Score: \(viewModel.score, specifier: "%.1f") (with speeding points: \(viewModel.bonus, specifier: "%-.1f"))")
+                Text(" Score: \(viewModel.score, specifier: "%.1f") (bonus points: \(viewModel.bonus, specifier: "%-.1f"))")
                     .foregroundColor(.primary)
                 
                 Spacer()
@@ -35,7 +37,9 @@ struct EmojiMemoryGameView: View {
             Grid (viewModel.cards¨, desiredAspectRatio: 1) { card in
                 CardView(card: card, fill: viewModel.themeFill)
                     .onTapGesture{
-                        viewModel.choose(card: card)
+                        withAnimation(.linear(duration: 0.5)) {
+                            viewModel.choose(card: card)
+                        }
                     }
                     .padding(7)
             }
@@ -67,8 +71,11 @@ struct CardView: View {
                     .opacity(0.33)
                 Text(card.content)
                     .font(Font.system(size: emojiFontSize(for: size)))
+                    .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
+                    .animation(card.isMatched ? Animation.linear(duration: 1).repeatForever(autoreverses: false) : .default)
             }
             .cardify(isFaceUp: card.isFaceUp, coverFill: fill)
+            .transition(.scale)
         }
     }
     
