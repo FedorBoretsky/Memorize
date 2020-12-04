@@ -52,9 +52,9 @@ class EmojiiMemoryGameVM: ObservableObject {
         model.score
     }
 
-    var bonus: Double {
-        model.bonus
-    }
+//    var bonus: Double {
+//        model.bonus
+//    }
 
     
     // MARK: - Access to the Theme
