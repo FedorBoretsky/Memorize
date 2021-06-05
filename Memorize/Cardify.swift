@@ -36,7 +36,7 @@ struct Cardify: AnimatableModifier {
                     RoundedRectangle(cornerRadius: cornerRadius(for: geometry.size)).fill(Color.white)
                     content
                 }
-                    .opacity(isFaceUp ? 1 : 0)
+                .opacity(isFaceUp ? 1 : 0)
                 RoundedRectangle(cornerRadius: cornerRadius(for: geometry.size))
                     .fill(LinearGradient(gradient: Gradient(colors: coverFill),
                                          startPoint: .bottomLeading,
@@ -45,7 +45,6 @@ struct Cardify: AnimatableModifier {
             }
             .rotation3DEffect(Angle.degrees(rotation), axis: (0,1,0))
         }
-        
     }
     
     private let borderWidth: CGFloat = 3

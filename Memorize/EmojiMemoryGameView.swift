@@ -30,9 +30,9 @@ struct EmojiMemoryGameView: View {
 //            HStack(alignment: .firstTextBaseline) {
 //                Text(" Score: \(viewModel.score, specifier: "%.1f")") // (bonus points: \(viewModel.bonus, specifier: "%-.1f"))")
 //                    .foregroundColor(.primary)
-//                
+//
 //                Spacer()
-//            }.padding()
+//            }.padding(.leading)
             
             Grid (viewModel.cards¨, desiredAspectRatio: 1) { card in
                 CardView(card: card, fill: viewModel.themeFill)
