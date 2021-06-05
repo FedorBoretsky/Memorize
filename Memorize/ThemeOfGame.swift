@@ -8,15 +8,20 @@
 import SwiftUI
 
 
-struct Theme {
+struct Theme: Codable {
     let name: String
     let emojis¨: [String]
     let pairsToShow: Int
-    let fill: [Color]
+    let fill: [UIColor.RGB]
+    
+    var json: Data? {
+        return try? JSONEncoder().encode(self)
+    }
+    
 }
 
 extension Theme {
-    init (name: String, emojis¨: String, pairsToShow: Int, fill: [Color]) {
+    init (name: String, emojis¨: String, pairsToShow: Int, fill: [UIColor.RGB]) {
         self.init(name: name, emojis¨: emojis¨.map{ String($0) }, pairsToShow: pairsToShow, fill: fill)
     }
 }
