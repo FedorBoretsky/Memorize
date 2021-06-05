@@ -38,9 +38,10 @@ class EmojiiMemoryGameVM: ObservableObject {
         let theme = possibleThemes¨[selectTheme()]
         let emojiiStore = theme.emojis¨.shuffled()
         let pairsCount = theme.pairsToShow
-        // Assignment V required task 2
         //
+        // Assignment V required task 2
         print("JSON representation of the theme:\n\(theme.json?.utf8 ?? "nil")")
+        //
         //
         return MemoryGameModel<String>(numberOfPairsOfCards: pairsCount) { pairIndex in
             return emojiiStore[pairIndex]
