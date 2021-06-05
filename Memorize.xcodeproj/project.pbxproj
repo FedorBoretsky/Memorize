@@ -40,6 +40,7 @@
 		9FAA2A0D2559D502005FF927 /* GridLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridLayout.swift; sourceTree = "<group>"; };
 		9FB1595C2555E6B800EE53D1 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		9FBC7C0D255C1F9000952FDA /* ThemeOfGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeOfGame.swift; sourceTree = "<group>"; };
+		9FC68E71266BC9F30060D949 /* Memorize Design Sketches.sketch */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Memorize Design Sketches.sketch"; sourceTree = SOURCE_ROOT; };
 		9FCA3FE1252B06A300B7F82F /* MemoryGameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryGameModel.swift; sourceTree = "<group>"; };
 		9FFE5B732571BEF80045605E /* Pie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pie.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,6 +91,7 @@
 				9F1C6B972524237500FED7D3 /* LaunchScreen.storyboard */,
 				9F1C6B9A2524237500FED7D3 /* Info.plist */,
 				9F1C6B942524237500FED7D3 /* Preview Content */,
+				9FC68E71266BC9F30060D949 /* Memorize Design Sketches.sketch */,
 			);
 			path = Memorize;
 			sourceTree = "<group>";
