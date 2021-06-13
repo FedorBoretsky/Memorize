@@ -10,6 +10,7 @@ import SwiftUI
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiiMemoryGameVM
     
+    
     var body: some View {
         
         VStack {
@@ -25,14 +26,9 @@ struct EmojiMemoryGameView: View {
                         viewModel.newGame()
                     }
                 }
-            }.padding([.horizontal, .top])
-            
-//            HStack(alignment: .firstTextBaseline) {
-//                Text(" Score: \(viewModel.score, specifier: "%.1f")") // (bonus points: \(viewModel.bonus, specifier: "%-.1f"))")
-//                    .foregroundColor(.primary)
-//
-//                Spacer()
-//            }.padding(.leading)
+            }
+            .padding([.horizontal, .top])
+            .padding(.bottom, 0.15)
             
             Grid (viewModel.cards¨, desiredAspectRatio: 1) { card in
                 CardView(card: card, fill: viewModel.themeFill)
@@ -43,6 +39,24 @@ struct EmojiMemoryGameView: View {
                     }
                     .padding(7)
             }
+            
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("Score: \(viewModel.scoreTotal, specifier: "%.1f")")
+                        .font(.headline)
+//                        .foregroundColor(.primary)
+                    Text("""
+                        Matched cards: \(viewModel.scoreMatchedReward, specifier: "%g"). \
+                        Mismatched cards: \(viewModel.scoreMismatchedPenalty, specifier: "%g"). \
+                        Speed\(Symbols.nonBreakingSpace)amplification: \(viewModel.scoreSpeedAmplification, specifier: "%+.1f")
+                        """)
+                }
+                Spacer()
+            }
+            .font(.callout)
+            .foregroundColor(.gray)
+            .padding([.horizontal, .bottom])
+            
             
             
         }

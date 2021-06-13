@@ -40,7 +40,7 @@ class EmojiiMemoryGameVM: ObservableObject {
         let pairsCount = theme.pairsToShow
         //
         // Assignment V required task 2
-        print("JSON representation of the theme:\n\(theme.json?.utf8 ?? "nil")")
+//        print("JSON representation of the theme:\n\(theme.json?.utf8 ?? "nil")")
         //
         //
         return MemoryGameModel<String>(numberOfPairsOfCards: pairsCount) { pairIndex in
@@ -54,15 +54,23 @@ class EmojiiMemoryGameVM: ObservableObject {
         model.cards¨
     }
     
-    var score: Double {
-        model.score
+    var scoreTotal: Double {
+        model.scoreTotal
     }
 
-//    var bonus: Double {
-//        model.bonus
-//    }
+    var scoreMatchedReward: Double {
+        model.scoreMatchedReward
+    }
 
+    var scoreMismatchedPenalty: Double {
+        model.scoreMismatchedPenalty
+    }
+
+    var scoreSpeedAmplification: Double {
+        model.scoreSpeedAmplification
+    }
     
+
     // MARK: - Access to the Theme
     
     
