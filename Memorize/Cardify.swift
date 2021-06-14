@@ -21,8 +21,6 @@ struct Cardify: AnimatableModifier {
     
     var coverFill: [Color]
 
-    
-    
     init(isFaceUp: Bool, coverFill: [Color]) {
         self.rotation = isFaceUp ? 0 : 180
         self.coverFill = coverFill
@@ -32,8 +30,10 @@ struct Cardify: AnimatableModifier {
         GeometryReader { geometry in 
             ZStack{
                 Group {
-                    RoundedRectangle(cornerRadius: cornerRadius(for: geometry.size)).stroke(lineWidth: borderWidth)
-                    RoundedRectangle(cornerRadius: cornerRadius(for: geometry.size)).fill(Color.white)
+                    RoundedRectangle(cornerRadius: cornerRadius(for: geometry.size))
+                        .fill(Color.white)
+                    RoundedRectangle(cornerRadius: cornerRadius(for: geometry.size))
+                        .strokeBorder(lineWidth: borderWidth(for: geometry.size))
                     content
                 }
                 .opacity(isFaceUp ? 1 : 0)
@@ -47,7 +47,13 @@ struct Cardify: AnimatableModifier {
         }
     }
     
-    private let borderWidth: CGFloat = 3
+    private func borderWidth(for size: CGSize) -> CGFloat {
+        if min(size.width, size.height) <= 77 {
+            return 2
+        } else {
+            return 3
+        }
+    }
     private func cornerRadius(for size: CGSize) -> CGFloat {
         return min(size.width, size.height) * 0.125
     }
