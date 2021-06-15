@@ -10,13 +10,17 @@ import SwiftUI
 struct ThemeChooser: View {
     
     var themes: [Theme] = ThemesStore().themes
+    @State private var backButtonColor = Color.black
     
     var body: some View {
         NavigationView{
             List{
                 ForEach(themes){ theme in
                     NavigationLink(
-                        destination: EmojiMemoryGameView(viewModel: EmojiiMemoryGameVM(theme: theme))) {
+                        destination: EmojiMemoryGameView(viewModel: EmojiiMemoryGameVM(theme: theme),
+                                                         backButtonColor: $backButtonColor)
+                        // TODO: Change @Binding to environment for accent color
+                    ) {
                         ThemeChoserRow(theme: theme)
                     }
                     
@@ -24,6 +28,7 @@ struct ThemeChooser: View {
             }
             .navigationTitle("Memorize")
         }
+        .accentColor(backButtonColor)
     }
 }
 
@@ -33,7 +38,6 @@ struct ThemeChoserRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 3){
             Text(theme.name)
-                .fontWeight(.regular)
             ThemeFillAndSamplesView(theme: theme)
         }
         .padding(.bottom, 6)
