@@ -7,13 +7,22 @@
 
 import SwiftUI
 
-extension ThemesStore {
+
+extension Theme {
     
-    static let themesStarterPack: [Theme] = [
-        Theme(name: "Halloween",
+    static let exampleHalloween = Theme(name: "Halloween",
               emojis: "👻🎃🕷🧙‍♀️🧹🕯🦇🌗🍭🧛🏻👀🙀",
               pairsToShow: 7,
-              fill: [UIColor(#colorLiteral(red: 0.998834908, green: 0.2302215695, blue: 0.1895241439, alpha: 1)).rgb, UIColor(Color.orange).rgb, UIColor(#colorLiteral(red: 1, green: 0.7764705882, blue: 0, alpha: 1)).rgb]),
+              fill: [UIColor(#colorLiteral(red: 0.998834908, green: 0.2302215695, blue: 0.1895241439, alpha: 1)).rgb, UIColor(Color.orange).rgb, UIColor(#colorLiteral(red: 1, green: 0.7764705882, blue: 0, alpha: 1)).rgb])
+    
+}
+
+
+extension ThemesStore {
+    
+    static let themeStarterPack: [Theme] = [
+        
+        Theme.exampleHalloween,
         
         Theme(name: "Flags",
               emojis: "🇦🇹🇩🇰🇨🇱🇨🇿🇨🇦🇬🇱🇬🇷🇱🇷🇺🇸🏴󠁧󠁢󠁥󠁮󠁧󠁿🇹🇿",

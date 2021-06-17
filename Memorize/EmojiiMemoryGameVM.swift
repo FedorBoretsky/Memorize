@@ -10,14 +10,18 @@ import SwiftUI
 class EmojiiMemoryGameVM: ObservableObject {
     
     private var theme: Theme
-    @Published private var model: MemoryGameModel<String>
+    
+    public typealias GameModel = MemoryGameModel<String>
+    
+    @Published private var model: GameModel
+    
     
     init(theme: Theme) {
         self.theme = theme
         self.model = Self.createMemoryGame(theme: theme)
     }
     
-    static private func createMemoryGame(theme: Theme, isShuffle: Bool = true) -> MemoryGameModel<String> {
+    static func createMemoryGame(theme: Theme, isShuffle: Bool = true) -> GameModel {
         var emojiiStore = theme.emojis
         let pairsCount = theme.pairsToShow
 

@@ -9,19 +9,19 @@ import SwiftUI
 
 struct ThemeChooser: View {
     
-    var themes: [Theme] = ThemesStore().themes
+    var themesStore = ThemesStore()
     @State private var backButtonColor = Color.black
     
     var body: some View {
         NavigationView{
             List{
-                ForEach(themes){ theme in
+                ForEach(themesStore.items){ item in
                     NavigationLink(
-                        destination: EmojiMemoryGameView(viewModel: EmojiiMemoryGameVM(theme: theme),
+                        destination: EmojiMemoryGameView(viewModel: item.gameViewModel,
                                                          backButtonColor: $backButtonColor)
                         // TODO: Change @Binding to environment for accent color
                     ) {
-                        ThemeChoserRow(theme: theme)
+                        ThemeChoserRow(theme: item.theme)
                     }
                     
                 }

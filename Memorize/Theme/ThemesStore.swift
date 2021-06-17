@@ -1,5 +1,5 @@
 //
-//  ThemesStore.swift
+//  GamesStore.swift
 //  Memorize
 //
 //  Created by Fedor Boretskiy on 14.06.2021.
@@ -8,9 +8,22 @@
 import Foundation
 
 class ThemesStore {
-    var themes: [Theme]
+    
+    struct ThemeStoreItem: Identifiable {
+        var theme: Theme
+        var gameViewModel: EmojiiMemoryGameVM
+        let id: UUID
+        
+        init(theme: Theme){
+            self.theme = theme
+            gameViewModel = EmojiiMemoryGameVM(theme: theme)
+            id = theme.id
+        }
+    }
+    
+    var items: [ThemeStoreItem]
     
     init() {
-        themes = Self.themesStarterPack
+        self.items = Self.themeStarterPack.map { ThemeStoreItem(theme: $0) }
     }
 }

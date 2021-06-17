@@ -61,11 +61,8 @@ struct EmojiMemoryGameView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let game = EmojiiMemoryGameVM(theme: ThemesStore.themesStarterPack[0])
-            game.choose(card: game.cards[0])
-            return
                 NavigationView {
-                    EmojiMemoryGameView(viewModel: game, backButtonColor: .constant(.green))
+                    EmojiMemoryGameView(viewModel: EmojiiMemoryGameVM(theme: Theme.exampleHalloween), backButtonColor: .constant(.green))
                 }
     }
 }
