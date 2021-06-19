@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ThemeChooser: View {
     
-    var themesStore = ThemesStore()
+    @ObservedObject var themesStore = ThemesStore()
     @State private var backButtonColor = Color.black
     
     var body: some View {
@@ -23,7 +23,11 @@ struct ThemeChooser: View {
                     ) {
                         ThemeChoserRow(theme: item.theme)
                     }
-                    
+                }
+                .onDelete{ indexSet in
+                    indexSet
+                        .map{ index in themesStore.items[index] }
+                        .forEach{ storeItem in themesStore.removeItemWithId(storeItem.id)}
                 }
             }
             .navigationTitle("Memorize")
