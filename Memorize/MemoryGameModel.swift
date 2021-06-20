@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct MemoryGameModel<CardContentType> where CardContentType: Equatable {
+struct MemoryGameModel<CardContentType>: Codable
+where CardContentType: Equatable, CardContentType: Codable {
     
     private(set) var cards: Array<Card>
     
@@ -100,7 +101,7 @@ struct MemoryGameModel<CardContentType> where CardContentType: Equatable {
     }
     
     
-    struct Card: Identifiable {
+    struct Card: Identifiable, Codable {
         var isFaceUp: Bool = false {
             didSet {
                 if isFaceUp {

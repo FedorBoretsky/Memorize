@@ -10,12 +10,11 @@ import Foundation
 class ThemesStore: ObservableObject {
     
     struct ThemeStoreItem: Identifiable {
-        let theme: Theme
+        var theme: Theme { gameViewModel.theme }
         var gameViewModel: EmojiiMemoryGameVM
         var id: UUID { theme.id }
         
         init(theme: Theme){
-            self.theme = theme
             self.gameViewModel = EmojiiMemoryGameVM(theme: theme)
         }
     }
