@@ -31,8 +31,17 @@ struct ThemeChooser: View {
                 }
             }
             .navigationTitle("Memorize")
+            .navigationBarItems(leading: newThemeButton, trailing: EditButton())
         }
         .accentColor(backButtonColor)
+    }
+}
+
+var newThemeButton: some View {
+    Button{
+        
+    } label: {
+        Image(systemName: "plus.circle")
     }
 }
 
