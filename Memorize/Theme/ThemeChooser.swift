@@ -18,7 +18,7 @@ struct ThemeChooser: View {
                 ForEach(themesStore.items){ item in
                     NavigationLink(
                         destination: EmojiMemoryGameView(viewModel: item.gameViewModel,
-                                                         backButtonColor: $backButtonColor)
+                                                         foregroundColor: $backButtonColor)
                         // TODO: Change @Binding to environment for accent color
                     ) {
                         ThemeChoserRow(theme: item.theme)
@@ -33,6 +33,7 @@ struct ThemeChooser: View {
             .navigationTitle("Memorize")
             .navigationBarItems(leading: newThemeButton, trailing: EditButton())
         }
+        .foregroundColor(.black)
         .accentColor(backButtonColor)
     }
 }
