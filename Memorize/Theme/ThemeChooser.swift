@@ -28,6 +28,7 @@ struct ThemeChooser: View {
                     indexSet
                         .map{ index in themesStore.items[index] }
                         .forEach{ storeItem in themesStore.removeItemWithId(storeItem.id)}
+                    themesStore.saveAll()
                 }
             }
             .navigationTitle("Memorize")
