@@ -9,18 +9,16 @@ import SwiftUI
 
 class EmojiiMemoryGameVM: ObservableObject {
     
-    private(set) var theme: Theme
     
     public typealias GameModel = MemoryGameModel<String>
-    
     @Published private var model: GameModel
-    
+    private(set) var theme: Theme
     
     init(theme: Theme) {
         self.theme = theme
         self.model = Self.createMemoryGame(theme: theme)
     }
-    
+        
     static func createMemoryGame(theme: Theme, isShuffle: Bool = true) -> GameModel {
         var emojiiStore = theme.emojis
         let pairsCount = theme.pairsToShow
@@ -37,6 +35,20 @@ class EmojiiMemoryGameVM: ObservableObject {
             return emojiiStore[pairIndex]
         }
     }
+    
+    // MARK: - JSON support
+    
+    var json: (themeJSON: Data?, gameModelJSON: Data?) {
+        return (theme.json, model.json)
+    }
+    
+    init? (themeJSON: Data?, gameModelJSON: Data?) {
+        guard let newTheme = Theme(json: themeJSON) else { return nil }
+        guard let newGameModel = GameModel(json: gameModelJSON) else { return nil }
+        self.theme = newTheme
+        self.model = newGameModel
+    }
+
     
     // MARK: - Sample For ThemeChoser
     

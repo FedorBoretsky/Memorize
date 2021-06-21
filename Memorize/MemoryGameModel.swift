@@ -100,6 +100,22 @@ where CardContentType: Equatable, CardContentType: Codable {
         cards.shuffle()
     }
     
+    // MARK: - JSON support
+    
+    var json: Data? {
+        return try? JSONEncoder().encode(self)
+    }
+    
+    init?(json: Data?) {
+        if json != nil,
+           let newGameModel = try? JSONDecoder().decode(MemoryGameModel.self, from: json!) {
+            self = newGameModel
+        } else {
+            return nil
+        }
+    }
+    
+    // MARK: - Card type
     
     struct Card: Identifiable, Codable {
         var isFaceUp: Bool = false {

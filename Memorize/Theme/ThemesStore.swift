@@ -25,6 +25,28 @@ class ThemesStore: ObservableObject {
         self.items = Self.themeStarterPack.map { ThemeStoreItem(theme: $0) }
     }
     
+    private struct PersistentInnerFormat: Codable {
+        let themeJSON: Data?
+        let gameModelJSON: Data?
+    }
+    
+    private static let userDefaultsKey = "ThemeStore"
+    
+    private func saveAll() {
+        var savedArray = [PersistentInnerFormat]()
+        
+        for item in items {
+            let jsonTuple = item.gameViewModel.json
+            let newSavedItem = PersistentInnerFormat(themeJSON: jsonTuple.themeJSON,
+                                                     gameModelJSON: jsonTuple.gameModelJSON)
+            savedArray.append(newSavedItem)
+        }
+        
+        UserDefaults.standard.setValue(savedArray, forKey: Self.userDefaultsKey)
+        
+    }
+    
+    
     func removeItemWithId(_ id: UUID) {
         if let index = items.firstIndex(where: { id == $0.id }){
             items.remove(at: index)

@@ -14,11 +14,22 @@ struct Theme: Codable, Identifiable {
     let pairsToShow: Int
     let fill: [UIColor.RGB]
     let id: UUID
-    
+}
+
+
+extension Theme {
     var json: Data? {
         return try? JSONEncoder().encode(self)
     }
     
+    init? (json: Data?) {
+        if json != nil,
+           let newTheme = try? JSONDecoder().decode(Theme.self, from: json!) {
+            self = newTheme
+        } else {
+            return nil
+        }
+    }
 }
 
 extension Theme {
