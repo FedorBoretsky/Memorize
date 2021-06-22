@@ -19,19 +19,12 @@ class EmojiiMemoryGameVM: ObservableObject {
         self.model = Self.createMemoryGame(theme: theme)
     }
     
-        
     static func createMemoryGame(theme: Theme, isShuffle: Bool = true) -> GameModel {
         var emojiiStore = theme.emojis
         let pairsCount = theme.pairsToShow
-
         if isShuffle {
             emojiiStore = emojiiStore.shuffled()
         }
-        //
-        // Assignment V required task 2
-//        print("JSON representation of the theme:\n\(theme.json?.utf8 ?? "nil")")
-        //
-        //
         return MemoryGameModel<String>(numberOfPairsOfCards: pairsCount) { pairIndex in
             return emojiiStore[pairIndex]
         }
@@ -71,7 +64,6 @@ class EmojiiMemoryGameVM: ObservableObject {
             cards.append(faceUpCard)
             id += 1
         }
-        
         return cards
     }
     

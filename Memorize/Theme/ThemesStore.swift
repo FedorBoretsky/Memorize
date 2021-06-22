@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class ThemesStore: ObservableObject {
     
@@ -62,6 +63,7 @@ class ThemesStore: ObservableObject {
         if let index = items.firstIndex(where: { id == $0.id }){
             items.remove(at: index)
         }
+        saveAll()
     }
     
 }

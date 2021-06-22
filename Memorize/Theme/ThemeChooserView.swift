@@ -1,5 +1,5 @@
 //
-//  ThemeChooser.swift
+//  ThemeChooserView.swift
 //  Memorize
 //
 //  Created by Fedor Boretskiy on 14.06.2021.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ThemeChooser: View {
+struct ThemeChooserView: View {
     
     @ObservedObject var themesStore = ThemesStore()
     @State private var backButtonColor = Color.black
@@ -28,7 +28,6 @@ struct ThemeChooser: View {
                     indexSet
                         .map{ index in themesStore.items[index] }
                         .forEach{ storeItem in themesStore.removeItemWithId(storeItem.id)}
-                    themesStore.saveAll()
                 }
             }
             .navigationTitle("Memorize")
@@ -95,7 +94,7 @@ struct ThemeFillAndSamplesView: View {
 
 struct ThemeChooser_Previews: PreviewProvider {
     static var previews: some View {
-        ThemeChooser()
+        ThemeChooserView()
         
     }
 }
