@@ -18,6 +18,7 @@ class EmojiiMemoryGameVM: ObservableObject {
         self.theme = theme
         self.model = Self.createMemoryGame(theme: theme)
     }
+    
         
     static func createMemoryGame(theme: Theme, isShuffle: Bool = true) -> GameModel {
         var emojiiStore = theme.emojis
@@ -38,15 +39,23 @@ class EmojiiMemoryGameVM: ObservableObject {
     
     // MARK: - JSON support
     
-    var json: (themeJSON: Data?, gameModelJSON: Data?) {
-        return (theme.json, model.json)
+    private struct SavinContainer: Codable {
+        let theme: Theme
+        let model: GameModel
     }
     
-    init? (themeJSON: Data?, gameModelJSON: Data?) {
-        guard let newTheme = Theme(json: themeJSON) else { return nil }
-        guard let newGameModel = GameModel(json: gameModelJSON) else { return nil }
-        self.theme = newTheme
-        self.model = newGameModel
+    var json: Data? {
+        return try? JSONEncoder().encode(SavinContainer(theme: theme, model: model))
+    }
+    
+    init? (json: Data?) {
+        if json != nil,
+           let readData = try? JSONDecoder().decode(SavinContainer.self, from: json!) {
+            self.theme = readData.theme
+            self.model = readData.model
+        } else {
+            return nil
+        }
     }
 
     

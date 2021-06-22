@@ -25,18 +25,16 @@ class ThemesStore: ObservableObject {
     }
     
     @Published var items: [ThemeStoreItem]
-    
+    private static let userDefaultsKey = "ThemeStore"
+
     init() {
         self.items = []
         
         // Trying read saved data.
         if let readedArray = UserDefaults.standard.array(forKey: Self.userDefaultsKey) {
             for rawData in readedArray{
-                if let typedData = rawData as? PersistentInnerFormat {
-                    let themeJSON = typedData.themeJSON
-                    let gameModelJSON = typedData.gameModelJSON
-                    if let gameViewModel = EmojiiMemoryGameVM(themeJSON: themeJSON,
-                                                              gameModelJSON: gameModelJSON) {
+                if let json = rawData as? Data {
+                    if let gameViewModel = EmojiiMemoryGameVM(json: json) {
                         items.append(ThemeStoreItem(gameViewModel: gameViewModel))
                     }
                 }
@@ -49,22 +47,15 @@ class ThemesStore: ObservableObject {
         }
     }
     
-    private struct PersistentInnerFormat: Codable {
-        let themeJSON: Data?
-        let gameModelJSON: Data?
-    }
-    
-    private static let userDefaultsKey = "ThemeStore"
     
     func saveAll() {
-        var savedArray = [PersistentInnerFormat]()
+        var savedArray = [Data]()
         for item in items {
-            let jsonTuple = item.gameViewModel.json
-            let newSavedItem = PersistentInnerFormat(themeJSON: jsonTuple.themeJSON,
-                                                     gameModelJSON: jsonTuple.gameModelJSON)
-            savedArray.append(newSavedItem)
+            if let data = item.gameViewModel.json {
+                savedArray.append(data)
+            }
         }
-        UserDefaults.standard.setValue(savedArray, forKey: Self.userDefaultsKey)
+        UserDefaults.standard.set(savedArray, forKey: Self.userDefaultsKey)
     }
         
     func removeItemWithId(_ id: UUID) {

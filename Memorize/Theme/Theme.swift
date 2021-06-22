@@ -1,5 +1,5 @@
 //
-//  ThemeOfGame.swift
+//  Theme.swift
 //  Memorize
 //
 //  Created by Fedor Boretsky on 11.11.2020.
@@ -16,21 +16,6 @@ struct Theme: Codable, Identifiable {
     let id: UUID
 }
 
-
-extension Theme {
-    var json: Data? {
-        return try? JSONEncoder().encode(self)
-    }
-    
-    init? (json: Data?) {
-        if json != nil,
-           let newTheme = try? JSONDecoder().decode(Theme.self, from: json!) {
-            self = newTheme
-        } else {
-            return nil
-        }
-    }
-}
 
 extension Theme {
     
