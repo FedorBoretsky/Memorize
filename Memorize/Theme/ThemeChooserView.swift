@@ -39,8 +39,8 @@ struct ThemeChooserView: View {
                         Image(systemName: "plus.circle")
                     },
                 trailing: EditButton())
-            .popover(isPresented: $isEditThemeShowing){
-                ThemeEditorView(theme: $tt)
+            .sheet(isPresented: $isEditThemeShowing){
+                ThemeEditorView(theme: $tt, isPresented: $isEditThemeShowing)
             }
         }
     }

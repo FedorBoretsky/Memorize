@@ -10,15 +10,15 @@ import SwiftUI
 struct ThemeEditorView: View {
     
     @Binding var theme: Theme
+    @Binding var isPresented: Bool
     @State private var emojisToAdd: String = ""
     
     @State private var selectedEmoji: String? = "👻"
-    
+        
     var body: some View {
         VStack {
-            Text("Edit theme \(theme.name)").font(.headline)
-                .padding()
-            Divider()
+            
+            header(title: "Edit Theme")
             
             Form{
                 
@@ -28,7 +28,6 @@ struct ThemeEditorView: View {
                 
                 
                 Section(header: Text("Emojis")){
-                    
                     TextField("Add Emoji", text: $emojisToAdd, onEditingChanged: {isBegin in
                         if !isBegin {
                             emojisToAdd.forEach { theme.emojis.insert(String($0), at: 0) }
@@ -37,59 +36,48 @@ struct ThemeEditorView: View {
                         }
                     }
                     )
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 90, maximum: 150))]) {
+                    
+                    // Grid of emojis
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 65, maximum: 150))]) {
                         ForEach(theme.emojis, id: \.self) { emoji in
-                            EmojiItemView(emoji: emoji, selectedEmoji: $selectedEmoji)
+                            EmojiItemView(emoji: emoji)
                             
                         }
                     }
-                }
+                } // End of section "Emojis"
             } // End of Form
-            
-            Spacer()
         } // End of Vstack
         .frame(minWidth: 300, minHeight: 500)
     }
+    
+    func header(title: String) -> some View {
+        ZStack {
+            Text(title).font(.headline)
+            HStack{
+                Spacer()
+                Button("Done") { isPresented = false }
+            }
+        }
+        .padding()
+    }
+
 }
 
 struct ThemeEditorView_Previews: PreviewProvider {
     static var previews: some View {
-        ThemeEditorView(theme: .constant(Theme.exampleHalloween))
+        ThemeEditorView(theme: .constant(Theme.exampleHalloween), isPresented: .constant(true))
     }
 }
 
 struct EmojiItemView: View {
     
     let emoji: String
-    @Binding var selectedEmoji: String?
-    
-    var isSelected: Bool {
-        if let se = selectedEmoji, se == emoji {
-            return true
-        } else {
-            return false
-        }
-    }
     
     var body: some View {
         ZStack {
             Text(emoji)
                 .font(.system(size: 40))
-                .padding()
-            if isSelected {
-                VStack {
-                    Spacer()
-                    HStack{
-                        Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                            Image(systemName: "trash")
-                        })
-                        Spacer()
-                        Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                            Image(systemName: "eye.slash")
-                        })
-                    }
-                }
-            }
+                .padding(.vertical)
         }
         .aspectRatio(1, contentMode: .fit)
     }
