@@ -7,14 +7,24 @@
 
 import SwiftUI
 
+
+
 struct ThemeEditorView: View {
     
     @Binding var theme: Theme
     @Binding var isPresented: Bool
+    
+    
+    private enum EmojisEditMode: String {
+        case inactive
+        case newEmojis
+        case hideEmojis
+        case deleteEmojis
+    }
+    
+    @State private var emojisEditMode: EmojisEditMode = .inactive
     @State private var emojisToAdd: String = ""
     
-    @State private var selectedEmoji: String? = "👻"
-        
     var body: some View {
         VStack {
             
@@ -28,14 +38,62 @@ struct ThemeEditorView: View {
                 
                 
                 Section(header: Text("Emojis")){
-                    TextField("Add Emoji", text: $emojisToAdd, onEditingChanged: {isBegin in
-                        if !isBegin {
-                            emojisToAdd.forEach { theme.emojis.insert(String($0), at: 0) }
-                            // TODO: Don't add emoji twice.
-                            emojisToAdd = ""
+                    
+                    
+                    Group {
+                        
+                        // Action bar for editing emoji collection.
+                        if emojisEditMode == .inactive {
+                            HStack {
+                                wideButton("New") { emojisEditMode = .newEmojis }
+                                Divider()
+                                wideButton("Hide") { emojisEditMode = .hideEmojis  }
+                                Divider()
+                                wideButton("Delete") { emojisEditMode = .deleteEmojis }
+                            }
+                            
                         }
+                        
+                        
+                        
+                        // Add emoji's controls.
+                        if emojisEditMode == .newEmojis {
+                            HStack{
+                                TextField("Type new emoji here", text: $emojisToAdd)
+                                Button("Add") {
+                                    emojisToAdd.forEach { theme.emojis.insert(String($0), at: 0) }
+                                    // TODO: Don't add invisible (space, tab, etc.) emoji.
+                                    // TODO: Don't add emoji twice.
+                                    emojisToAdd = ""
+                                    emojisEditMode = .inactive
+                                }
+                            }
+                        }
+                        
+                        // Hide emoji's controls.
+                        if emojisEditMode == .hideEmojis {
+                            HStack{
+                                Text("Hide Emojis")
+                                Spacer()
+                                Button("Done") {
+                                    emojisEditMode = .inactive
+                                }
+                            }
+                        }
+                        
+                        // Delete emoji's controls.
+                        if emojisEditMode == .deleteEmojis {
+                            HStack{
+                                Text("Delete Emojis")
+                                Spacer()
+                                Button("Done") {
+                                    emojisEditMode = .inactive
+                                }
+                            }
+                        }
+                        
+                        
                     }
-                    )
                     
                     // Grid of emojis
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 65, maximum: 150))]) {
@@ -60,7 +118,20 @@ struct ThemeEditorView: View {
         }
         .padding()
     }
-
+    
+    func wideButton(_ label: String, action: @escaping ()-> Void) -> some View {
+        Button(
+            action: action,
+            label: {
+                HStack{
+                    Spacer()
+                    Text(label).fixedSize()
+                    Spacer()
+                }
+            })
+            .buttonStyle(BorderlessButtonStyle())
+    }
+    
 }
 
 struct ThemeEditorView_Previews: PreviewProvider {
