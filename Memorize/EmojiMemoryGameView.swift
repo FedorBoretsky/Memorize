@@ -9,7 +9,6 @@ import SwiftUI
 
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiiMemoryGameVM
-    @Binding var foregroundColor: Color
     
     var body: some View {
         
@@ -44,8 +43,7 @@ struct EmojiMemoryGameView: View {
             .navigationBarItems(trailing: newGameButton)
         }
         .padding()
-        .foregroundColor(viewModel.themeForegroundColor)
-        .onAppear{ foregroundColor = viewModel.themeForegroundColor }
+//        .foregroundColor(viewModel.themeForegroundColor)
     }
     
     var newGameButton: some View {
@@ -62,7 +60,7 @@ struct EmojiMemoryGameView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
                 NavigationView {
-                    EmojiMemoryGameView(viewModel: EmojiiMemoryGameVM(theme: Theme.exampleHalloween), foregroundColor: .constant(.green))
+                    EmojiMemoryGameView(viewModel: EmojiiMemoryGameVM(theme: Theme.exampleHalloween))
                 }
     }
 }

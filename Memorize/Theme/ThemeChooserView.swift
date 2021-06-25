@@ -10,16 +10,16 @@ import SwiftUI
 struct ThemeChooserView: View {
     
     @ObservedObject var themesStore = ThemesStore()
-    @State private var backButtonColor = Color.black
+    @State private var isEditThemeShowing = false
+    
+    @State var tt = Theme.exampleHalloween
     
     var body: some View {
         NavigationView{
             List{
                 ForEach(themesStore.items){ item in
                     NavigationLink(
-                        destination: EmojiMemoryGameView(viewModel: item.gameViewModel,
-                                                         foregroundColor: $backButtonColor)
-                        // TODO: Change @Binding to environment for accent color
+                        destination: EmojiMemoryGameView(viewModel: item.gameViewModel)
                     ) {
                         ThemeChoserRow(theme: item.theme)
                     }
@@ -31,20 +31,21 @@ struct ThemeChooserView: View {
                 }
             }
             .navigationTitle("Memorize")
-            .navigationBarItems(leading: newThemeButton, trailing: EditButton())
+            .navigationBarItems(
+                leading:
+                    Button{
+                        isEditThemeShowing = true
+                    } label: {
+                        Image(systemName: "plus.circle")
+                    },
+                trailing: EditButton())
+            .popover(isPresented: $isEditThemeShowing){
+                ThemeEditorView(theme: $tt)
+            }
         }
-        .foregroundColor(.black)
-        .accentColor(backButtonColor)
     }
 }
 
-var newThemeButton: some View {
-    Button{
-        
-    } label: {
-        Image(systemName: "plus.circle")
-    }
-}
 
 struct ThemeChoserRow: View {
     var theme: Theme

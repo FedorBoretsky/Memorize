@@ -9,8 +9,8 @@ import SwiftUI
 
 
 struct Theme: Codable, Identifiable {
-    let name: String
-    let emojis: [String]
+    var name: String
+    var emojis: [String]
     let pairsToShow: Int
     let fill: [UIColor.RGB]
     let id: UUID

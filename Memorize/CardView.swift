@@ -49,6 +49,7 @@ struct CardView: View {
             }
             .cardify(isFaceUp: card.isFaceUp, coverFill: fill)
             .transition(.scale)
+            .foregroundColor(fill.last)
         }
     }
     
