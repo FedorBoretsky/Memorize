@@ -14,17 +14,14 @@ struct ThemeEditorView: View {
     @Binding var theme: Theme
     @Binding var isPresented: Bool
     
-    
-    private enum EmojisEditMode: String {
-        case inactive
-        case newEmojis
+    private enum EmojisEditMode {
+        case selectAction
+        case addEmojis
         case hideEmojis
         case deleteEmojis
     }
-    
-    @State private var emojisEditMode: EmojisEditMode = .inactive
-    @State private var emojisToAdd: String = ""
-    
+    @State private var emojisEditMode: EmojisEditMode = .selectAction
+        
     var body: some View {
         VStack {
             
@@ -36,73 +33,26 @@ struct ThemeEditorView: View {
                     TextField("\(theme.name)", text: $theme.name)
                 }
                 
-                
                 Section(header: Text("Emojis")){
-                    
-                    
+
+                    // First line in the "Emojis" section select editing
+                    // actions or provides controls for current action.
                     Group {
-                        
-                        // Action bar for editing emoji collection.
-                        if emojisEditMode == .inactive {
-                            HStack {
-                                wideButton("New") { emojisEditMode = .newEmojis }
-                                Divider()
-                                wideButton("Hide") { emojisEditMode = .hideEmojis  }
-                                Divider()
-                                wideButton("Delete") { emojisEditMode = .deleteEmojis }
-                            }
-                            
-                        }
-                        
-                        
-                        
-                        // Add emoji's controls.
-                        if emojisEditMode == .newEmojis {
-                            HStack{
-                                TextField("Type new emoji here", text: $emojisToAdd)
-                                Button("Add") {
-                                    emojisToAdd.forEach { theme.emojis.insert(String($0), at: 0) }
-                                    // TODO: Don't add invisible (space, tab, etc.) emoji.
-                                    // TODO: Don't add emoji twice.
-                                    emojisToAdd = ""
-                                    emojisEditMode = .inactive
-                                }
-                            }
-                        }
-                        
-                        // Hide emoji's controls.
-                        if emojisEditMode == .hideEmojis {
-                            HStack{
-                                Text("Hide Emojis")
-                                Spacer()
-                                Button("Done") {
-                                    emojisEditMode = .inactive
-                                }
-                            }
-                        }
-                        
-                        // Delete emoji's controls.
-                        if emojisEditMode == .deleteEmojis {
-                            HStack{
-                                Text("Delete Emojis")
-                                Spacer()
-                                Button("Done") {
-                                    emojisEditMode = .inactive
-                                }
-                            }
-                        }
-                        
-                        
+                        if emojisEditMode == .selectAction { emojiActionsSelector() }
+                        if emojisEditMode == .addEmojis    { addEmojisControls()    }
+                        if emojisEditMode == .hideEmojis   { hideEmojisControls()   }
+                        if emojisEditMode == .deleteEmojis { deleteEmojisControls() }
                     }
                     
                     // Grid of emojis
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 65, maximum: 150))]) {
                         ForEach(theme.emojis, id: \.self) { emoji in
                             EmojiItemView(emoji: emoji)
-                            
                         }
                     }
+                    
                 } // End of section "Emojis"
+                
             } // End of Form
         } // End of Vstack
         .frame(minWidth: 300, minHeight: 500)
@@ -119,19 +69,62 @@ struct ThemeEditorView: View {
         .padding()
     }
     
-    func wideButton(_ label: String, action: @escaping ()-> Void) -> some View {
-        Button(
-            action: action,
-            label: {
-                HStack{
-                    Spacer()
-                    Text(label).fixedSize()
-                    Spacer()
-                }
-            })
-            .buttonStyle(BorderlessButtonStyle())
+    private func emojiActionsSelector() -> some View {
+        HStack {
+            wideButton("Add") { emojisEditMode = .addEmojis }
+            Divider()
+            wideButton("Hide") { emojisEditMode = .hideEmojis  }
+            Divider()
+            wideButton("Delete") { emojisEditMode = .deleteEmojis }
+        }
     }
     
+
+    func wideButton(_ label: String, action: @escaping ()-> Void) -> some View {
+        Button( action: action, label: {
+            HStack{
+                Spacer()
+                Text(label).fixedSize()
+                Spacer()
+            }
+        })
+        .buttonStyle(BorderlessButtonStyle())
+    }
+    
+    @State private var emojisToAdd: String = ""
+    private func addEmojisControls() -> some View {
+        HStack{
+            TextField("Type new emoji here", text: $emojisToAdd)
+            Button("Add") {
+                emojisToAdd.forEach { theme.emojis.insert(String($0), at: 0) }
+                // TODO: Don't add invisible (space, tab, etc.) emoji.
+                // TODO: Don't add emoji twice.
+                emojisToAdd = ""
+                emojisEditMode = .selectAction
+            }
+        }
+    }
+    
+    fileprivate func hideEmojisControls() -> some View {
+        return HStack{
+            Text("Hide Emojis")
+            Spacer()
+            Button("Finish") {
+                emojisEditMode = .selectAction
+            }
+        }
+    }
+    
+    fileprivate func deleteEmojisControls() -> some View {
+        return HStack{
+            Text("Delete Emojis")
+            Spacer()
+            Button("Finish") {
+                emojisEditMode = .selectAction
+            }
+        }
+    }
+
 }
 
 struct ThemeEditorView_Previews: PreviewProvider {
