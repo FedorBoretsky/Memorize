@@ -8,20 +8,20 @@
 import SwiftUI
 
 
+fileprivate enum EmojisEditMode {
+    case selectAction
+    case addEmojis
+    case hideEmojis
+    case deleteEmojis
+}
 
 struct ThemeEditorView: View {
     
     @Binding var theme: Theme
     @Binding var isPresented: Bool
     
-    private enum EmojisEditMode {
-        case selectAction
-        case addEmojis
-        case hideEmojis
-        case deleteEmojis
-    }
     @State private var emojisEditMode: EmojisEditMode = .selectAction
-        
+    
     var body: some View {
         VStack {
             
@@ -34,7 +34,7 @@ struct ThemeEditorView: View {
                 }
                 
                 Section(header: Text("Emojis")){
-
+                    
                     // First line in the "Emojis" section select editing
                     // actions or provides controls for current action.
                     Group {
@@ -47,7 +47,7 @@ struct ThemeEditorView: View {
                     // Grid of emojis
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 65, maximum: 150))]) {
                         ForEach(theme.emojis, id: \.self) { emoji in
-                            EmojiItemView(emoji: emoji)
+                            EmojiItemView(emoji: emoji, editMode: emojisEditMode)
                         }
                     }
                     
@@ -75,11 +75,11 @@ struct ThemeEditorView: View {
             Divider()
             wideButton("Hide") { emojisEditMode = .hideEmojis  }
             Divider()
-            wideButton("Delete") { emojisEditMode = .deleteEmojis }
+            wideButton("Delete") { withAnimation{ emojisEditMode = .deleteEmojis } }
         }
     }
     
-
+    
     func wideButton(_ label: String, action: @escaping ()-> Void) -> some View {
         Button( action: action, label: {
             HStack{
@@ -119,12 +119,10 @@ struct ThemeEditorView: View {
         return HStack{
             Text("Delete Emojis")
             Spacer()
-            Button("Finish") {
-                emojisEditMode = .selectAction
-            }
+            Button("Finish") { withAnimation{ emojisEditMode = .selectAction } }
         }
     }
-
+    
 }
 
 struct ThemeEditorView_Previews: PreviewProvider {
@@ -136,12 +134,23 @@ struct ThemeEditorView_Previews: PreviewProvider {
 struct EmojiItemView: View {
     
     let emoji: String
+    fileprivate let editMode: EmojisEditMode
     
     var body: some View {
-        ZStack {
+        ZStack(alignment: .topLeading) {
+            
+            // Emoji
             Text(emoji)
                 .font(.system(size: 40))
                 .padding(.vertical)
+                .frame(width: 60, height: 60, alignment: .center)
+            
+            if editMode == .deleteEmojis {
+                Image(systemName: "minus.circle.fill")
+                    .renderingMode(.original)
+                    .transition(.scale)
+                    .font(.system(size: 25))
+            }
         }
         .aspectRatio(1, contentMode: .fit)
     }
