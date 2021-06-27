@@ -48,13 +48,11 @@ extension Theme {
     
     mutating func addEmojis(string: String) {
         let removedWhitespaces = string.replacingOccurrences(of: "\\s*", with: "", options: [.regularExpression])
-        var newCollection = emojis
-        for newEmoji in removedWhitespaces {
-            if !newCollection.contains(String(newEmoji)) {
-                newCollection.insert(String(newEmoji), at: 0)
+        for newEmoji in removedWhitespaces.reversed() {
+            if !emojis.contains(String(newEmoji)) {
+                emojis.insert(String(newEmoji), at: 0)
             }
         }
-        emojis = newCollection
     }
 }
 
