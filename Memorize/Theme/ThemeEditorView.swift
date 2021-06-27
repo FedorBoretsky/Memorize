@@ -20,7 +20,7 @@ struct ThemeEditorView: View {
     @Binding var theme: Theme
     @Binding var isPresented: Bool
     
-    @State private var emojisEditMode: EmojisEditMode = .selectAction
+    @State private var emojisEditMode: EmojisEditMode = .deleteEmojis
     
     var body: some View {
         VStack {
@@ -53,7 +53,6 @@ struct ThemeEditorView: View {
                     }
                     
                 } // End of section "Emojis"
-                
             } // End of Form
         } // End of Vstack
         .frame(minWidth: 300, minHeight: 500)
@@ -169,7 +168,8 @@ struct EmojiItemView: View {
                 Image(systemName: "minus.circle.fill")
                     .renderingMode(.original)
                     .transition(.scale)
-                    .font(.system(size: 25))
+                    .font(.system(size: 18))
+                    .padding(5)
             }
         }
         .aspectRatio(1, contentMode: .fit)
