@@ -45,5 +45,16 @@ extension Theme {
     mutating func removeEmoji(_ emoji: String) {
         emojis.removeAll { $0 == emoji }
     }
+    
+    mutating func addEmojis(string: String) {
+        let removedWhitespaces = string.replacingOccurrences(of: "\\s*", with: "", options: [.regularExpression])
+        var newCollection = emojis
+        for newEmoji in removedWhitespaces {
+            if !newCollection.contains(String(newEmoji)) {
+                newCollection.insert(String(newEmoji), at: 0)
+            }
+        }
+        emojis = newCollection
+    }
 }
 

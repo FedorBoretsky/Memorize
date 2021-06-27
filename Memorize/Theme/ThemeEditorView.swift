@@ -72,7 +72,7 @@ struct ThemeEditorView: View {
     
     private func emojiActionsSelector() -> some View {
         HStack {
-            wideButton("Add") { emojisEditMode = .addEmojis }
+            wideButton("Add") { withAnimation{  emojisEditMode = .addEmojis } }
             Divider()
             wideButton("Hide") { emojisEditMode = .hideEmojis  }
             Divider()
@@ -97,11 +97,11 @@ struct ThemeEditorView: View {
         HStack{
             TextField("Type new emoji here", text: $emojisToAdd)
             Button("Add") {
-                emojisToAdd.forEach { theme.emojis.insert(String($0), at: 0) }
-                // TODO: Don't add invisible (space, tab, etc.) emoji.
-                // TODO: Don't add emoji twice.
-                emojisToAdd = ""
-                emojisEditMode = .selectAction
+                withAnimation {
+                    theme.addEmojis(string: emojisToAdd)
+                    emojisToAdd = ""
+                    emojisEditMode = .selectAction
+                }
             }
         }
     }
