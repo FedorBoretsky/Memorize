@@ -16,7 +16,7 @@ struct Theme: Codable, Identifiable {
     let id: UUID
 }
 
-
+// Convenient initializers
 extension Theme {
     
     // Emojis in the single string.
@@ -37,5 +37,13 @@ extension Theme {
                   id: UUID())
     }
     
+}
+
+// Edit emoji collection
+extension Theme {
+    
+    mutating func removeEmoji(_ emoji: String) {
+        emojis.removeAll { $0 == emoji }
+    }
 }
 

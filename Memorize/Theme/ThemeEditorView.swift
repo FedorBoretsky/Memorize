@@ -48,6 +48,7 @@ struct ThemeEditorView: View {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 65, maximum: 150))]) {
                         ForEach(theme.emojis, id: \.self) { emoji in
                             EmojiItemView(emoji: emoji, editMode: emojisEditMode)
+                                .onTapGesture { self.performEditActionOnEmoji(emoji) }
                         }
                     }
                     
@@ -117,19 +118,37 @@ struct ThemeEditorView: View {
     
     fileprivate func deleteEmojisControls() -> some View {
         return HStack{
-            Text("Delete Emojis")
+            Text("Tap emoji to delete.")
             Spacer()
             Button("Finish") { withAnimation{ emojisEditMode = .selectAction } }
         }
     }
     
+    private func performEditActionOnEmoji(_ emoji: String) {
+        
+        switch emojisEditMode {
+        case .selectAction:
+            break
+        case .addEmojis:
+            break
+        case .hideEmojis:
+            break
+        case .deleteEmojis:
+            withAnimation{ theme.removeEmoji(emoji) }
+        }
+    }
+    
 }
+
+
 
 struct ThemeEditorView_Previews: PreviewProvider {
     static var previews: some View {
         ThemeEditorView(theme: .constant(Theme.exampleHalloween), isPresented: .constant(true))
     }
 }
+
+
 
 struct EmojiItemView: View {
     
@@ -145,6 +164,7 @@ struct EmojiItemView: View {
                 .padding(.vertical)
                 .frame(width: 60, height: 60, alignment: .center)
             
+            // Delete badge
             if editMode == .deleteEmojis {
                 Image(systemName: "minus.circle.fill")
                     .renderingMode(.original)
