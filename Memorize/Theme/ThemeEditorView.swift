@@ -20,7 +20,7 @@ struct ThemeEditorView: View {
     @Binding var theme: Theme
     @Binding var isPresented: Bool
     
-    @State private var emojisEditMode: EmojisEditMode = .deleteEmojis
+    @State private var emojisEditMode: EmojisEditMode = .selectAction
     
     var body: some View {
         VStack {
@@ -52,7 +52,13 @@ struct ThemeEditorView: View {
                         }
                     }
                     
-                } // End of section "Emojis"
+                }
+                
+                Section(header: Text("Show in game"), footer: EmptyView()){
+                    Stepper("\(theme.pairsToShow) pairs", value: $theme.pairsToShow, in: 2...theme.emojis.count)
+                }
+                
+                
             } // End of Form
         } // End of Vstack
         .frame(minWidth: 300, minHeight: 500)
