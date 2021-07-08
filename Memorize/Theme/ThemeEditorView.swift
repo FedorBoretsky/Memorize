@@ -54,9 +54,13 @@ struct ThemeEditorView: View {
                     
                 }
                 
-                Section(header: Text("Show in game"), footer: EmptyView()){
+                Section(header: Text("Show in game")){
                     Stepper("\(theme.pairsToShow) pairs", value: $theme.pairsToShow, in: 2...theme.emojis.count)
                 }
+                
+//                Section(header: Text("Cover color")) {
+//                    …
+//                }
                 
                 
             } // End of Form

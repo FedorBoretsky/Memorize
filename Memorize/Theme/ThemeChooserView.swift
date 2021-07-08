@@ -10,7 +10,9 @@ import SwiftUI
 struct ThemeChooserView: View {
     
     @ObservedObject var themesStore = ThemesStore()
-    @State private var isEditThemeShowing = false
+    
+    @State private var isThemeEditorShowing = false
+    @State private var isListEditMode: EditMode = .inactive
     
     @State var tt = Theme.exampleHalloween
     
@@ -34,14 +36,16 @@ struct ThemeChooserView: View {
             .navigationBarItems(
                 leading:
                     Button{
-                        isEditThemeShowing = true
+                        isThemeEditorShowing = true
                     } label: {
                         Image(systemName: "plus.circle")
                     },
-                trailing: EditButton())
-            .sheet(isPresented: $isEditThemeShowing){
-                ThemeEditorView(theme: $tt, isPresented: $isEditThemeShowing)
+                trailing: EditButton()
+            )
+            .sheet(isPresented: $isThemeEditorShowing){
+                ThemeEditorView(theme: $tt, isPresented: $isThemeEditorShowing)
             }
+            .environment(\.editMode, $isListEditMode)
         }
     }
 }
