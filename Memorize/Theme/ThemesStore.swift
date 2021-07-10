@@ -7,19 +7,22 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 class ThemesStore: ObservableObject {
     
     struct ThemeStoreItem: Identifiable {
-        var theme: Theme { gameViewModel.theme }
+        var theme: Theme
         var gameViewModel: EmojiiMemoryGameVM
         var id: UUID { theme.id }
         
         init(theme: Theme){
+            self.theme = theme
             self.gameViewModel = EmojiiMemoryGameVM(theme: theme)
         }
         
         init(gameViewModel: EmojiiMemoryGameVM){
+            self.theme = gameViewModel.theme
             self.gameViewModel = gameViewModel
         }
         
@@ -48,6 +51,18 @@ class ThemesStore: ObservableObject {
         }
     }
     
+    func bindingToTheme() -> Binding<Theme> {
+        return Binding<Theme>(
+            get: {
+                self.items[0].theme
+            },
+            set: {
+                self.items[0] = ThemesStore.ThemeStoreItem(theme: $0)
+                self.saveAll()
+            }
+        )
+    }
+
     
     func saveAll() {
         var savedArray = [Data]()
