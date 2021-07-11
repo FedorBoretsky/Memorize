@@ -74,6 +74,16 @@ class ThemesStore: ObservableObject {
     
     private var autosave: Cancellable? = nil
     
+    static func saveAll(_ recieved: [UUID:ThemeStoreItem]) {
+        var savedArray = [Data]()
+        for (_, item) in recieved {
+            if let data = item.gameViewModel.json {
+                savedArray.append(data)
+            }
+        }
+        UserDefaults.standard.set(savedArray, forKey: Self.userDefaultsKey)
+    }
+
     func bindingToTheme(_ theme: Theme) -> Binding<Theme> {
         // TODO: - Is it possible to remove one theme while editing another?
         return Binding<Theme>(
@@ -86,19 +96,7 @@ class ThemesStore: ObservableObject {
             }
         )
     }
-    
-
-    
-    static func saveAll(_ recieved: [UUID:ThemeStoreItem]) {
-        var savedArray = [Data]()
-        for (_, item) in recieved {
-            if let data = item.gameViewModel.json {
-                savedArray.append(data)
-            }
-        }
-        UserDefaults.standard.set(savedArray, forKey: Self.userDefaultsKey)
-    }
-        
+            
     func removeItemWithId(_ id: UUID) {
         items[id] = nil
     }
