@@ -9,13 +9,13 @@ import SwiftUI
 
 struct ThemeChooserView: View {
     
-    @ObservedObject var themesStore = ThemesStore()
+    @EnvironmentObject var themesStore: ThemesStore //= ThemesStore()
     
     @State private var newTheme: Theme?
     @State private var isThemeEditorShowing = false
     @State private var isListEditMode: EditMode = .inactive
     
-//    @State var tt = Theme.exampleHalloween
+    //    @State var tt = Theme.exampleHalloween
     
     var body: some View {
         NavigationView{
@@ -24,7 +24,7 @@ struct ThemeChooserView: View {
                     NavigationLink(
                         destination: EmojiMemoryGameView(viewModel: item.gameViewModel)
                     ) {
-                        ThemeChoserRow(theme: item.theme, isEdit: isListEditMode.isEditing)
+                        ThemeChoserRow(theme: item.theme, isListEdit: isListEditMode.isEditing)
                     }
                 }
                 .onDelete{ indexSet in
@@ -58,20 +58,22 @@ struct ThemeChooserView: View {
 
 struct ThemeChoserRow: View {
     var theme: Theme
-    var isEdit: Bool
+    var isListEdit: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 3){
             Text(theme.name)
-            ThemeFillAndSamplesView(theme: theme, isEdit: isEdit)
+            ThemeFillAndSamplesView(theme: theme, isListEdit: isListEdit)
         }
         .padding(.bottom, 6)
     }
 }
 
 struct ThemeFillAndSamplesView: View {
+    @EnvironmentObject var themeStore: ThemesStore
     var theme: Theme
-    var isEdit: Bool
+    var isListEdit: Bool
+    @State private var isThemeEdit: Bool = false
     
     var body: some View {
         
@@ -83,18 +85,24 @@ struct ThemeFillAndSamplesView: View {
         return HStack(spacing: 4) {
             
             // Edit button
-            if isEdit {
+            if isListEdit {
                 ZStack {
                     CardView(card: coverCard, fill: [Color.accentColor])
                     VStack(spacing: 3){
-                        Text("\(Image(systemName: "slider.horizontal.3"))").font(.title3)//.fontWeight(.bold)
+                        Text("\(Image(systemName: "slider.horizontal.3"))").font(.title3)
                         Text("EDIT").font(.caption2).fontWeight(.bold)
                     }
                     .foregroundColor(.white)
                 }
                 .frame(width: Self.sampleSize * 1, height: Self.sampleSize)
+                .onTapGesture{
+                    isThemeEdit = true
+                }
+                .sheet(isPresented: $isThemeEdit) {
+                    ThemeEditorView(theme: themeStore.bindingToTheme(theme), isPresented: $isThemeEdit)
+                }
             }
-
+            
             
             // Cover sample with pairs number.
             ZStack {
