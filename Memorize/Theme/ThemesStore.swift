@@ -65,7 +65,14 @@ class ThemesStore: ObservableObject {
         if items.isEmpty {
             Self.themeStarterPack.forEach { self.addItem(ThemeStoreItem(theme: $0)) }
         }
+        
+        //  Setup autosave
+        autosave = $items.sink(receiveValue: { value in Self.saveAll(value)})
+        
+        
     }
+    
+    private var autosave: Cancellable? = nil
     
     func bindingToTheme(_ theme: Theme) -> Binding<Theme> {
         // TODO: - Is it possible to remove one theme while editing another?
@@ -76,16 +83,15 @@ class ThemesStore: ObservableObject {
             set: {
                 // Reset game for changed theme
                 self.items[theme.id] = ThemesStore.ThemeStoreItem(theme: $0)
-                self.saveAll()
             }
         )
     }
     
 
     
-    func saveAll() {
+    static func saveAll(_ recieved: [UUID:ThemeStoreItem]) {
         var savedArray = [Data]()
-        for (_, item) in items {
+        for (_, item) in recieved {
             if let data = item.gameViewModel.json {
                 savedArray.append(data)
             }
@@ -95,7 +101,6 @@ class ThemesStore: ObservableObject {
         
     func removeItemWithId(_ id: UUID) {
         items[id] = nil
-        saveAll()
     }
     
 }
