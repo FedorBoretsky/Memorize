@@ -11,6 +11,7 @@ struct ThemeChooserView: View {
     
     @ObservedObject var themesStore = ThemesStore()
     
+    @State private var newTheme: Theme?
     @State private var isThemeEditorShowing = false
     @State private var isListEditMode: EditMode = .inactive
     
@@ -19,7 +20,7 @@ struct ThemeChooserView: View {
     var body: some View {
         NavigationView{
             List{
-                ForEach(themesStore.items){ item in
+                ForEach(themesStore.itemsSortedByName){ item in
                     NavigationLink(
                         destination: EmojiMemoryGameView(viewModel: item.gameViewModel)
                     ) {
@@ -28,14 +29,16 @@ struct ThemeChooserView: View {
                 }
                 .onDelete{ indexSet in
                     indexSet
-                        .map{ index in themesStore.items[index] }
+                        .map{ index in themesStore.itemsSortedByName[index] }
                         .forEach{ storeItem in themesStore.removeItemWithId(storeItem.id)}
                 }
             }
             .navigationTitle("Memorize")
             .navigationBarItems(
                 leading:
+                    // Create new theme
                     Button{
+                        newTheme = themesStore.makeNewTheme()
                         isThemeEditorShowing = true
                     } label: {
                         Image(systemName: "plus.circle")
@@ -43,7 +46,7 @@ struct ThemeChooserView: View {
                 trailing: EditButton()
             )
             .sheet(isPresented: $isThemeEditorShowing){
-                ThemeEditorView(theme: themesStore.bindingToTheme(),
+                ThemeEditorView(theme: themesStore.bindingToTheme(newTheme!),
                                 isPresented: $isThemeEditorShowing)
             }
             .environment(\.editMode, $isListEditMode)

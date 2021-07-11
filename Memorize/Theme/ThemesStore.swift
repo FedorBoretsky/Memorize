@@ -28,18 +28,34 @@ class ThemesStore: ObservableObject {
         
     }
     
-    @Published var items: [ThemeStoreItem]
+    @Published var items: [UUID:ThemeStoreItem]  // TODO: Private?
+    
+    private func addItem(_ item: ThemeStoreItem) {
+        items[item.id] = item
+    }
+    
+    func makeNewTheme() -> Theme {
+        let newTheme = Theme.makeNewThemeTemplate()
+        let newStoreItem = ThemeStoreItem(theme: newTheme)
+        self.addItem(newStoreItem)
+        return newTheme
+    }
+    
+    var itemsSortedByName: [ThemeStoreItem] {
+        items.values.sorted { $0.theme.name < $1.theme.name }
+    }
+    
     private static let userDefaultsKey = "ThemeStore"
 
     init() {
-        self.items = []
+        self.items = [:]
         
-        // Trying read saved data.
+        // Trying to read saved data.
         if let readedArray = UserDefaults.standard.array(forKey: Self.userDefaultsKey) {
             for rawData in readedArray{
                 if let json = rawData as? Data {
                     if let gameViewModel = EmojiiMemoryGameVM(json: json) {
-                        items.append(ThemeStoreItem(gameViewModel: gameViewModel))
+                        addItem(ThemeStoreItem(gameViewModel: gameViewModel))
                     }
                 }
             }
@@ -47,26 +63,29 @@ class ThemesStore: ObservableObject {
         
         // If something went wrong use the default set of themes.
         if items.isEmpty {
-            self.items = Self.themeStarterPack.map { ThemeStoreItem(theme: $0) }
+            Self.themeStarterPack.forEach { self.addItem(ThemeStoreItem(theme: $0)) }
         }
     }
     
-    func bindingToTheme() -> Binding<Theme> {
+    func bindingToTheme(_ theme: Theme) -> Binding<Theme> {
+        // TODO: - Is it possible to remove one theme while editing another?
         return Binding<Theme>(
             get: {
-                self.items[0].theme
+                self.items[theme.id]!.theme
             },
             set: {
-                self.items[0] = ThemesStore.ThemeStoreItem(theme: $0)
+                // Reset game for changed theme
+                self.items[theme.id] = ThemesStore.ThemeStoreItem(theme: $0)
                 self.saveAll()
             }
         )
     }
+    
 
     
     func saveAll() {
         var savedArray = [Data]()
-        for item in items {
+        for (_, item) in items {
             if let data = item.gameViewModel.json {
                 savedArray.append(data)
             }
@@ -75,9 +94,7 @@ class ThemesStore: ObservableObject {
     }
         
     func removeItemWithId(_ id: UUID) {
-        if let index = items.firstIndex(where: { id == $0.id }){
-            items.remove(at: index)
-        }
+        items[id] = nil
         saveAll()
     }
     

@@ -15,6 +15,12 @@ extension Theme {
               pairsToShow: 7,
               fill: [UIColor(#colorLiteral(red: 0.998834908, green: 0.2302215695, blue: 0.1895241439, alpha: 1)).rgb, UIColor(Color.orange).rgb, UIColor(#colorLiteral(red: 1, green: 0.7764705882, blue: 0, alpha: 1)).rgb])
     
+    static func makeNewThemeTemplate() -> Theme {
+        Theme(name: "Untitled",
+              emojis: "🎱🎛🖤🐜",
+              pairsToShow: 4,
+              fill: [UIColor(#colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)).rgb])
+    }
 }
 
 
