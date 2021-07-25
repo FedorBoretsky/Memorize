@@ -10,7 +10,13 @@ import SwiftUI
 
 struct Theme: Codable, Identifiable {
     var name: String
-    var emojis: [String]
+    var emojis: [String] {
+        willSet {
+            if newValue.count < pairsToShow {
+                pairsToShow = newValue.count
+            }
+        }
+    }
     var pairsToShow: Int
     var fill: [UIColor.RGB]
     let id: UUID
@@ -42,8 +48,13 @@ extension Theme {
 // Edit emoji collection
 extension Theme {
     
+    var minimumEmojiCount: Int { 2 }
+    var isMinimumEmojiCount: Bool { emojis.count == minimumEmojiCount }
+    
     mutating func removeEmoji(_ emoji: String) {
-        emojis.removeAll { $0 == emoji }
+        if emojis.count > minimumEmojiCount {
+            emojis.removeAll { $0 == emoji }
+        }
     }
     
     mutating func addEmojis(string: String) {

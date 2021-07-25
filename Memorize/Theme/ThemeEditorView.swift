@@ -125,9 +125,14 @@ struct ThemeEditorView: View {
         }
     }
     
+    
     fileprivate func deleteEmojisControls() -> some View {
         return HStack{
-            Text("Tap emoji to delete.")
+            if !theme.isMinimumEmojiCount {
+                Text("Tap emoji to delete.")
+            }else{
+                Text("Enough!").foregroundColor(.red)
+            }
             Spacer()
             Button("Finish") { withAnimation{ emojisEditMode = .selectAction } }
         }
