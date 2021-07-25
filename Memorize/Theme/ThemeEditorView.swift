@@ -47,7 +47,7 @@ struct ThemeEditorView: View {
                     // Grid of emojis
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 65, maximum: 150))]) {
                         ForEach(theme.emojis, id: \.self) { emoji in
-                            EmojiItemView(emoji: emoji, editMode: emojisEditMode)
+                            EmojiItemView(emoji: emoji, editMode: emojisEditMode, theme: $theme)
                                 .onTapGesture { self.performEditActionOnEmoji(emoji) }
                         }
                     }
@@ -131,7 +131,7 @@ struct ThemeEditorView: View {
             if !theme.isMinimumEmojiCount {
                 Text("Tap emoji to delete.")
             }else{
-                Text("Enough!").foregroundColor(.red)
+                Text("Theme must have at least \(theme.minimumEmojiCount) emojis.").foregroundColor(.red)
             }
             Spacer()
             Button("Finish") { withAnimation{ emojisEditMode = .selectAction } }
@@ -148,7 +148,9 @@ struct ThemeEditorView: View {
         case .hideEmojis:
             break
         case .deleteEmojis:
-            withAnimation{ theme.removeEmoji(emoji) }
+            if !theme.isMinimumEmojiCount {
+                withAnimation{ theme.removeEmoji(emoji) }
+            }
         }
     }
     
@@ -168,6 +170,7 @@ struct EmojiItemView: View {
     
     let emoji: String
     fileprivate let editMode: EmojisEditMode
+    @Binding var theme: Theme
     
     var body: some View {
         ZStack(alignment: .topLeading) {
@@ -181,7 +184,8 @@ struct EmojiItemView: View {
             // Delete badge
             if editMode == .deleteEmojis {
                 Image(systemName: "minus.circle.fill")
-                    .renderingMode(.original)
+                    .renderingMode(theme.isMinimumEmojiCount ? .template : .original)
+                    .foregroundColor(.gray)
                     .transition(.scale)
                     .font(.system(size: 18))
                     .padding(5)
