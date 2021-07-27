@@ -58,9 +58,17 @@ struct ThemeEditorView: View {
                     Stepper("\(theme.pairsToShow) pairs", value: $theme.pairsToShow, in: 2...theme.emojis.count)
                 }
                 
-//                Section(header: Text("Cover color")) {
-//                    …
-//                }
+                Section(header: Text("Cover color")) {
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 65, maximum: 150))]){
+                        ForEach(Array(FillStore.shared.items), id: \.self) { fill in
+                            FillView(fill: fill, isSelected: fill == theme.fill)
+                                .frame(width: 65, height: 65)
+                                .onTapGesture {
+                                    theme.fill = fill
+                                }
+                        }
+                    }
+                }
                 
                 
             } // End of Form

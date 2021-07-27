@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+public typealias Fill = [UIColor.RGB]
 
 struct Theme: Codable, Identifiable {
     var name: String
@@ -18,7 +19,7 @@ struct Theme: Codable, Identifiable {
         }
     }
     var pairsToShow: Int
-    var fill: [UIColor.RGB]
+    var fill: Fill
     let id: UUID
 }
 
@@ -26,7 +27,7 @@ struct Theme: Codable, Identifiable {
 extension Theme {
     
     // Emojis in the single string.
-    init (name: String, emojis: String, pairsToShow: Int, fill: [UIColor.RGB], id: UUID) {
+    init (name: String, emojis: String, pairsToShow: Int, fill: Fill, id: UUID) {
         self.init(name: name,
                   emojis: emojis.map{ String($0) },
                   pairsToShow: pairsToShow,
@@ -35,7 +36,7 @@ extension Theme {
     }
     
     // Auto ID + Emoji in the single string.
-    init (name: String, emojis: String, pairsToShow: Int, fill: [UIColor.RGB]) {
+    init (name: String, emojis: String, pairsToShow: Int, fill: Fill) {
         self.init(name: name,
                   emojis: emojis,
                   pairsToShow: pairsToShow,

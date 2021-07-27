@@ -20,6 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Create the SwiftUI view that provides the window contents.
         let themeStore = ThemesStore()
+        FillStore.shared.gatherFillsFromThemeStore(themeStore)
         let contentView = ThemeChooserView().environmentObject(themeStore)
 
         // Use a UIHostingController as window root view controller.
