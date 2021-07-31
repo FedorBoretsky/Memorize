@@ -21,6 +21,7 @@ struct Theme: Codable, Identifiable {
     var pairsToShow: Int
     var fill: Fill
     let id: UUID
+    var hiddenEmojis: Set<String> = Set()
 }
 
 // Convenient initializers
@@ -55,6 +56,14 @@ extension Theme {
     mutating func removeEmoji(_ emoji: String) {
         if emojis.count > minimumEmojiCount {
             emojis.removeAll { $0 == emoji }
+        }
+    }
+    
+    mutating func toogleVisibilityEmoji(_ emoji: String){
+        if hiddenEmojis.contains(emoji) {
+            hiddenEmojis.remove(emoji)
+        } else {
+            hiddenEmojis.insert(emoji)
         }
     }
     

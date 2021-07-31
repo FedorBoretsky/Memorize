@@ -91,7 +91,7 @@ struct ThemeEditorView: View {
         HStack {
             wideButton("Add") { withAnimation{  emojisEditMode = .addEmojis } }
             Divider()
-            wideButton("Hide") { emojisEditMode = .hideEmojis  }
+            wideButton("Usage") { emojisEditMode = .hideEmojis  }
             Divider()
             wideButton("Delete") { withAnimation{ emojisEditMode = .deleteEmojis } }
         }
@@ -125,7 +125,7 @@ struct ThemeEditorView: View {
     
     fileprivate func hideEmojisControls() -> some View {
         return HStack{
-            Text("Hide Emojis")
+            Text("Tap emoji to toggle usage.")
             Spacer()
             Button("Finish") {
                 emojisEditMode = .selectAction
@@ -154,8 +154,12 @@ struct ThemeEditorView: View {
         case .addEmojis:
             break
         case .hideEmojis:
-            break
+            // TODO: isMininmumEmojiCount replace to isMinimumVisibleEmojiCount
+            if !theme.isMinimumEmojiCount {
+                withAnimation{ theme.toogleVisibilityEmoji(emoji) }
+            }
         case .deleteEmojis:
+            // TODO: isMininmumEmojiCount replace to isMinimumVisibleEmojiCount
             if !theme.isMinimumEmojiCount {
                 withAnimation{ theme.removeEmoji(emoji) }
             }
@@ -180,23 +184,58 @@ struct EmojiItemView: View {
     fileprivate let editMode: EmojisEditMode
     @Binding var theme: Theme
     
+    var isHidden: Bool { theme.hiddenEmojis.contains(emoji) }
+    let emojiSize: CGFloat = 40
+    let badgeSize: CGFloat = 18
+    let badgePadding: CGFloat = 5
+
     var body: some View {
-        ZStack(alignment: .topLeading) {
+        ZStack(alignment: .topTrailing) {
             
-            // Emoji
-            Text(emoji)
-                .font(.system(size: 40))
-                .padding(.vertical)
-                .frame(width: 60, height: 60, alignment: .center)
+            ZStack{
+                
+                // Emoji
+                Text(emoji)
+                    .opacity( isHidden ? 0.3 : 1)
+                    .font(.system(size: emojiSize))
+                    .padding(.vertical)
+                    .frame(width: 60, height: 60, alignment: .center)
+                
+                // Hidden emoji sign
+                if isHidden {
+                    Image(systemName: "eye.slash")
+                        .font(.system(size: emojiSize * 0.55))
+                        .foregroundColor(Color.init(white: 0.5))
+                }
+            }
             
-            // Delete badge
+            
+            // Delete command badge
             if editMode == .deleteEmojis {
                 Image(systemName: "minus.circle.fill")
                     .renderingMode(theme.isMinimumEmojiCount ? .template : .original)
                     .foregroundColor(.gray)
                     .transition(.scale)
-                    .font(.system(size: 18))
-                    .padding(5)
+                    .font(.system(size: badgeSize))
+                    .padding(badgePadding)
+            }
+            
+            // Hide command badge
+            if editMode == .hideEmojis {
+                ZStack {
+                    Image(systemName: "circle.fill")
+                        .renderingMode(.template)
+                        .foregroundColor(.white)
+//                        .transition(.scale)
+                
+                    Image(systemName: isHidden ? "circle" : "checkmark.circle.fill")
+                        .renderingMode(.template)
+                        .foregroundColor(.accentColor)
+//                        .transition(.scale)
+                }
+                .font(.system(size: badgeSize))
+                .padding(badgePadding)
+
             }
         }
         .aspectRatio(1, contentMode: .fit)
