@@ -22,6 +22,11 @@ struct Theme: Codable, Identifiable {
     var fill: Fill
     let id: UUID
     var hiddenEmojis: Set<String> = Set()
+    
+    var activeEmojis: [String] {
+        emojis.compactMap{ hiddenEmojis.contains($0) ? nil : $0}
+    }
+
 }
 
 // Convenient initializers
@@ -47,12 +52,13 @@ extension Theme {
     
 }
 
+
 // Edit emoji collection
 extension Theme {
     
     var minimumEmojiCount: Int { 2 }
     var isMinimumEmojiCount: Bool { emojis.count == minimumEmojiCount }
-    
+        
     mutating func removeEmoji(_ emoji: String) {
         if emojis.count > minimumEmojiCount {
             emojis.removeAll { $0 == emoji }

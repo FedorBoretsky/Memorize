@@ -20,7 +20,7 @@ class EmojiiMemoryGameVM: ObservableObject {
     }
     
     static func createMemoryGame(theme: Theme, isShuffle: Bool = true) -> GameModel {
-        var emojiiStore = theme.emojis
+        var emojiiStore = theme.activeEmojis
         let pairsCount = theme.pairsToShow
         if isShuffle {
             emojiiStore = emojiiStore.shuffled()
@@ -57,7 +57,7 @@ class EmojiiMemoryGameVM: ObservableObject {
     static func themeCardsSample(theme: Theme) -> Array<MemoryGameModel<String>.Card> {
         var cards = Array<MemoryGameModel<String>.Card>()
         var id = 1
-        for emoji in theme.emojis {
+        for emoji in theme.activeEmojis {
             var faceUpCard = MemoryGameModel<String>.Card(content: String(emoji), id: id)
             faceUpCard.isFaceUp = true
             faceUpCard.bonusTimeLimit = 0
