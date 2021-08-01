@@ -123,9 +123,17 @@ struct ThemeEditorView: View {
         }
     }
     
+    var minimumActiveEmojisReachedMessage: String {
+        "Theme must have at least \(theme.minimumActiveEmojiCount)\(Symbols.nonBreakingSpace)active emojis."
+    }
+    
     fileprivate func hideEmojisControls() -> some View {
         return HStack{
-            Text("Tap emoji to toggle usage.")
+            if !theme.isMinimumActiveEmojiCount {
+                Text("Tap emoji to toggle usage.")
+            }else{
+                Text(minimumActiveEmojisReachedMessage).foregroundColor(.red)
+            }
             Spacer()
             Button("Finish") {
                 emojisEditMode = .selectAction
@@ -136,10 +144,10 @@ struct ThemeEditorView: View {
     
     fileprivate func deleteEmojisControls() -> some View {
         return HStack{
-            if !theme.isMinimumEmojiCount {
+            if !theme.isMinimumActiveEmojiCount {
                 Text("Tap emoji to delete.")
             }else{
-                Text("Theme must have at least \(theme.minimumEmojiCount) emojis.").foregroundColor(.red)
+                Text(minimumActiveEmojisReachedMessage).foregroundColor(.red)
             }
             Spacer()
             Button("Finish") { withAnimation{ emojisEditMode = .selectAction } }
@@ -155,12 +163,12 @@ struct ThemeEditorView: View {
             break
         case .hideEmojis:
             // TODO: isMininmumEmojiCount replace to isMinimumVisibleEmojiCount
-            if !theme.isMinimumEmojiCount {
+            if theme.hiddenEmojis.contains(emoji) || !theme.isMinimumActiveEmojiCount {
                 withAnimation{ theme.toogleVisibilityEmoji(emoji) }
             }
         case .deleteEmojis:
             // TODO: isMininmumEmojiCount replace to isMinimumVisibleEmojiCount
-            if !theme.isMinimumEmojiCount {
+            if !theme.isMinimumActiveEmojiCount {
                 withAnimation{ theme.removeEmoji(emoji) }
             }
         }
@@ -213,7 +221,7 @@ struct EmojiItemView: View {
             // Delete command badge
             if editMode == .deleteEmojis {
                 Image(systemName: "minus.circle.fill")
-                    .renderingMode(theme.isMinimumEmojiCount ? .template : .original)
+                    .renderingMode(theme.isMinimumActiveEmojiCount ? .template : .original)
                     .foregroundColor(.gray)
                     .transition(.scale)
                     .font(.system(size: badgeSize))
@@ -226,15 +234,15 @@ struct EmojiItemView: View {
                     Image(systemName: "circle.fill")
                         .renderingMode(.template)
                         .foregroundColor(.white)
-//                        .transition(.scale)
+                        .transition(.scale)
                 
                     Image(systemName: isHidden ? "circle" : "checkmark.circle.fill")
                         .renderingMode(.template)
-                        .foregroundColor(.accentColor)
-//                        .transition(.scale)
+                        .foregroundColor(!theme.isMinimumActiveEmojiCount || isHidden  ? .accentColor : .gray)
                 }
                 .font(.system(size: badgeSize))
                 .padding(badgePadding)
+                .transition(.scale)
 
             }
         }

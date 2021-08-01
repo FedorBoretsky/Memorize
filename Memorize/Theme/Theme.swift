@@ -12,19 +12,27 @@ public typealias Fill = [UIColor.RGB]
 struct Theme: Codable, Identifiable {
     var name: String
     var emojis: [String] {
-        willSet {
-            if newValue.count < pairsToShow {
-                pairsToShow = newValue.count
-            }
+        didSet {
+            correctPairsToShow()
         }
     }
     var pairsToShow: Int
     var fill: Fill
     let id: UUID
-    var hiddenEmojis: Set<String> = Set()
+    var hiddenEmojis: Set<String> = Set() {
+        didSet {
+            correctPairsToShow()
+        }
+    }
     
     var activeEmojis: [String] {
         emojis.compactMap{ hiddenEmojis.contains($0) ? nil : $0}
+    }
+    
+    mutating func correctPairsToShow() {
+        if activeEmojis.count < pairsToShow {
+            pairsToShow = activeEmojis.count
+        }
     }
 
 }
@@ -56,11 +64,11 @@ extension Theme {
 // Edit emoji collection
 extension Theme {
     
-    var minimumEmojiCount: Int { 2 }
-    var isMinimumEmojiCount: Bool { emojis.count == minimumEmojiCount }
+    var minimumActiveEmojiCount: Int { 2 }
+    var isMinimumActiveEmojiCount: Bool { activeEmojis.count == minimumActiveEmojiCount }
         
     mutating func removeEmoji(_ emoji: String) {
-        if emojis.count > minimumEmojiCount {
+        if emojis.count > minimumActiveEmojiCount {
             emojis.removeAll { $0 == emoji }
         }
     }
